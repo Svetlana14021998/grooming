@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Pet Grooming Salon</title>
+    <link rel="icon" type="image/png"  th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/masters.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+</head>
+<body>
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
+        </div>
+        <div class="nav-menu">
+            <a href="services.html" th:href="@{/main}" class="nav-link">
+                <span class="logo-icon">✨</span>
+                <span th:text="#{nav.main}">Main</span>
+            </a>
+            <a href="services.html" th:href="@{/services}" class="nav-link">
+                <span class="logo-icon">✂️</span>
+                <span th:text="#{nav.services}">Services</span>
+            </a>
+            <a href="masters.html" th:href="@{/masters}" class="nav-link">
+                <span class="logo-icon">👩‍🔧</span>
+                <span th:text="#{nav.masters}">Our masters</span>
+            </a>
+            <a href="contacts.html" th:href="@{/contacts}" class="nav-link">
+                <span class="logo-icon">📍</span>
+                <span th:text="#{nav.contacts}">Contacts</span>
+            </a>
+            <a href="feedback.html" th:href="@{/feedback}" class="nav-link">
+                <span class="logo-icon">💬</span>
+                <span th:text="#{nav.feedback}">Feedback</span>
+            </a>
+        </div>
+        <div class="language-switcher">
+            <a href="masters.html" th:href="@{/masters(lang=en)}" class="lang-link" title="English">
+                <span class="fi fi-gb"></span>
+            </a>
+            <a href="masters.html" th:href="@{/masters(lang=ru)}" class="lang-link" title="Русский">
+                <span class="fi fi-ru"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="masters-container">
+    <h1 th:text="#{our_masters}">Our Masters</h1>
+    <div class="masters-list" th:each="master : ${masters}">
+        <div class="master-card horizontal">
+            <div class="master-photo">
+                <img th:src="@{${master.pathToPhoto != null ? master.pathToPhoto : '/images/masters/default-master.png'}}"
+                     th:alt="${master.fullName}">
+            </div>
+            <div class="master-info">
+                <h3 th:text="${master.fullName}">Елена Соколова</h3>
+                <p class="specialization" th:text="${master.specialisation}">Груминг кошек и собак</p>
+
+                <div th:if="${master.reviewsCount > 0}" class="master-rating">
+                    <div class="rating-stars">
+                        <div class="stars-background">★★★★★</div>
+                        <div class="stars-filled" th:style="'width: ' + (${master.rating} / 5 * 100) + '%;'">★★★★★</div>
+                    </div>
+                    <div class="rating-info">
+                        <span class="rating-value" th:text="${#numbers.formatDecimal(master.rating, 1, 1)}">0.0</span>
+                        <span class="rating-separator">/</span>
+                        <span class="rating-max">5.0</span>
+                        <span class="reviews-count" th:text="'('+ #{reviews} +': ' + ${master.reviewsCount} + ' '  + ')'">(0 отзывов)</span>
+                    </div>
+                </div>
+
+                <div th:if="${master.reviewsCount == 0}" class="master-rating no-reviews">
+                    <div class="rating-stars">
+                        <div class="stars-background">★★★★★</div>
+                    </div>
+                    <div class="rating-info">
+                        <span class="no-reviews-text" th:text="#{no_reviews_yet}">Нет отзывов</span>
+                    </div>
+                </div>
+
+                <div class="master-details">
+                    <p><span>🎓</span> <span th:text="${master.experience}">Опыт работы</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        <span th:text="#{zoo_info}">Royal Fluff — Pet Grooming Salon. All rights reserved.</span>
+    </p>
+    <p>
+        <span>📞 </span>
+        <span th:text="#{phone}">Phone:</span>
+        <span th:text="${phone}">+7(999)-999-99-99</span>
+        <span>| 📍 </span>
+        <span th:text="#{address}">SomeCity, st. SomeStreet, someHome</span>
+        <span>| 🕐 </span>
+        <span th:text="#{work_hours}">Work hours:</span>
+        <span th:text="${work_hours}">00-00</span>
+        <span th:text="#{everyday}">EveryDays</span>
+    </p>
+</footer>
+
+</body>
+</html>

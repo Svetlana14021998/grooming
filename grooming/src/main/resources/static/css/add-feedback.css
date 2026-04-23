@@ -1,0 +1,306 @@
+.feedback-add-page {
+    max-width: 800px;
+    margin: 100px auto 50px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.feedback-form-container {
+    background: linear-gradient(135deg, #fff9f0 0%, #ffe6d5 100%);
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ffd700;
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-form-container::before {
+    content: "🐾🐾🐾";
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.08;
+    pointer-events: none;
+    transform: rotate(-15deg);
+}
+
+.feedback-form-container::after {
+    content: "🐾🐾🐾";
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 100px;
+    opacity: 0.08;
+    pointer-events: none;
+    transform: rotate(10deg);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.form-header h1 {
+    font-size: 36px;
+    color: #2c3e2f;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #2c3e2f 0%, #ffd700 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.form-header h1::before {
+    content: "🐾 ";
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #2c3e2f;
+}
+
+.form-header h1::after {
+    content: " 🐾";
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #2c3e2f;
+}
+
+.form-subtitle {
+    font-size: 16px;
+    color: #8ba88f;
+    font-style: italic;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    animation: slideIn 0.4s ease-out;
+    position: relative;
+    z-index: 1;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-left: 5px solid #28a745;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+    color: #721c24;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e2f;
+}
+
+.form-control {
+    padding: 12px 16px;
+    border: 2px solid #e8d5b7;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+    background: white;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.rating-input {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255, 215, 0, 0.15);
+    padding: 12px 24px;
+    border-radius: 60px;
+    width: fit-content;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.rating-star {
+    font-size: 32px;
+    font-weight: normal;
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    color: #aaa;
+    text-shadow: none;
+}
+
+.rating-star:hover {
+    transform: none !important;
+}
+
+.rating-star.active {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb347 25%, #ffd700 50%, #ffb347 75%, #ffd700 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 8px rgba(255, 180, 71, 0.6);
+    animation: goldGlow 2s ease-in-out infinite;
+}
+
+.rating-star:not(.active):hover {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 6px rgba(255, 180, 71, 0.4);
+}
+
+@keyframes goldGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+        background-position: 0% 50%;
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+        background-position: 100% 50%;
+    }
+    100% {
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+        background-position: 0% 50%;
+    }
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    padding-left: 12px;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.submit-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #3a5a3e 0%, #2c3e2f 100%);
+}
+
+.cancel-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #2c3e2f;
+    color: #2c3e2f;
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #2c3e2f;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,48 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /groomingapp
+spring:
+  mail:
+    host: smtp.mail.ru
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+  messages:
+    encoding: UTF-8
+  datasource:
+    url: jdbc:postgresql://localhost:5432/zoo-info
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    initialization-mode: always
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    clean-on-validation-error: false
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.flywaydb: DEBUG
+app:
+  email: info@royalfluff.ru
+  phone: +7 (999) 123-45-67
+  work-hours: 10:00 - 20:00
+  photo-path: /images/masters
+  service-photo-path: /images/services
+  admin-email: ${ADMIN_EMAIL}
+  mail-printform-path: /mail/
