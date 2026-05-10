@@ -29,7 +29,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: validate
-    show-sql: true
   flyway:
     enabled: true
     clean-on-validation-error: false
@@ -37,7 +36,6 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.flywaydb: DEBUG
 app:
   email: info@royalfluff.ru
   phone: +7 (999) 123-45-67

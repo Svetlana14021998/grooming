@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Fluff - Pet Grooming Salon</title>
-    <link rel="icon" type="image/png"  th:href="@{/images/favicon.png}">
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/mainPage.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
@@ -88,11 +88,11 @@
     <div class="gallery-wrapper">
         <button class="scroll-btn" id="leftBtn">◀</button>
         <div class="image-scroll" id="imageScroll">
-            <img th:src="@{/images/2.jpg}" alt="Before-After 1" th:alt="#{image}">
-            <img th:src="@{/images/3.jpg}" alt="Before-After 2" th:alt="#{image}">
-            <img th:src="@{/images/4.jpg}" alt="Before-After 3" th:alt="#{image}">
-            <img th:src="@{/images/5.jpg}" alt="Before-After 4" th:alt="#{image}">
-            <img th:src="@{/images/6.jpeg}" alt="Before-After 5" th:alt="#{image}">
+
+            <img th:each="img : ${images}"
+                 th:src="@{${img}}"
+                 th:alt="#{image}"
+                 loading="lazy">
         </div>
         <button class="scroll-btn" id="rightBtn">▶</button>
     </div>
