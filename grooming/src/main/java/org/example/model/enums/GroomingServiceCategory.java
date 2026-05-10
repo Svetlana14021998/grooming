@@ -1,7 +1,8 @@
 package org.example.model.enums;
 
 import lombok.Getter;
-import org.example.exception.UnknowTypeException;
+import org.example.exception.UnknownTypeException;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,21 +24,23 @@ public enum GroomingServiceCategory {
         this.nameEn = nameEn;
     }
 
-    public static GroomingServiceCategory fromLocalizedName(String name, Locale locale) {
-        return switch (locale.getLanguage()) {
+    public static GroomingServiceCategory fromLocalizedName(String name) {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        return switch (currentLocale.getLanguage()) {
             case "ru" -> Arrays.stream(GroomingServiceCategory.values())
                 .filter(x -> x.nameRu.equals(name))
                 .findFirst()
-                .orElseThrow(() -> new UnknowTypeException("Unknown category: " + name));
+                .orElseThrow(() -> new UnknownTypeException("Unknown category: " + name));
             default -> Arrays.stream(GroomingServiceCategory.values())
                 .filter(x -> x.nameEn.equals(name))
                 .findFirst()
-                .orElseThrow(() -> new UnknowTypeException("Unknown category: " + name));
+                .orElseThrow(() -> new UnknownTypeException("Unknown category: " + name));
         };
     }
 
-    public static List<String> geAllForLocale(Locale locale) {
-        return switch (locale.getLanguage()) {
+    public static List<String> geAllForLocale() {
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        return switch (currentLocale.getLanguage()) {
             case "ru" -> Arrays.stream(GroomingServiceCategory.values())
                 .map(GroomingServiceCategory::getNameRu)
                 .toList();

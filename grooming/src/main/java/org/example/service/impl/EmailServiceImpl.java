@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.example.config.AppConfig;
 import org.example.entity.EmailRequest;
+import org.example.exception.SendMessagingException;
 import org.example.service.EmailService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -34,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
 
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException("Ошибка при отправке письма: " + e.getMessage());
+            throw new SendMessagingException("Ошибка при отправке письма: " + e.getMessage());
         }
     }
 

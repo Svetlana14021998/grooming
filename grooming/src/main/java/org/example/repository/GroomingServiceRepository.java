@@ -1,8 +1,6 @@
 package org.example.repository;
 
-import org.example.model.AnimalType;
 import org.example.model.GroomingService;
-import org.example.model.enums.GroomingServiceCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -12,9 +10,5 @@ public interface GroomingServiceRepository extends JpaRepository<GroomingService
     JpaSpecificationExecutor<GroomingService> {
 
     List<GroomingService> findByIsPopularTrue();
-
-    List<GroomingService> findByAnimalTypesContains(AnimalType animalType);
-
-    List<GroomingService> findByCategory(GroomingServiceCategory category);
 }
 

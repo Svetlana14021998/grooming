@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClientMessageDto {
 
+    private Long id;
+
     @NotBlank(message = "{name_not_empty}")
     private String name;
 

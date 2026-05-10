@@ -104,8 +104,8 @@
             <div class="filter-group">
                 <label class="filter-label" th:text="#{items_count}">Items per page:</label>
                 <select name="size" class="filter-select">
-                    <option value="5" th:selected="${param.size == null or param.size[0] == '5'}">5</option>
-                    <option value="10" th:selected="${param.size != null and param.size[0] == '10'}">10</option>
+                    <option value="5" th:selected="${param.size != null and param.size[0] == '5'}">5</option>
+                    <option value="10" th:selected="${param.size == null or param.size[0] == '10'}">10</option>
                     <option value="15" th:selected="${param.size != null and param.size[0] == '15'}">15</option>
                     <option value="25" th:selected="${param.size != null and param.size[0] == '25'}">25</option>
                 </select>
@@ -159,7 +159,7 @@
         <div class="pagination-container">
 
             <a th:if="${currentPage > 0}"
-               th:href="@{/feedback(page=${currentPage - 1}, size=${param.size != null ? param.size[0] : 6}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
+               th:href="@{/feedback(page=${currentPage - 1}, size=${param.size != null ? param.size[0] : 10}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
                class="pagination-prev" th:text="#{back}">
                 ← Назад
             </a>
@@ -168,14 +168,14 @@
             <div class="pagination-numbers">
                 <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                    th:if="${i >= currentPage - 2 and i <= currentPage + 2}"
-                   th:href="@{/feedback(page=${i}, size=${param.size != null ? param.size[0] : 6}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
+                   th:href="@{/feedback(page=${i}, size=${param.size != null ? param.size[0] : 10}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
                    th:class="${i == currentPage} ? 'pagination-number active' : 'pagination-number'"
                    th:text="${i + 1}">
                 </a>
             </div>
 
             <a th:if="${currentPage < totalPages - 1}"
-               th:href="@{/feedback(page=${currentPage + 1}, size=${param.size != null ? param.size[0] : 6}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
+               th:href="@{/feedback(page=${currentPage + 1}, size=${param.size != null ? param.size[0] : 10}, masterId=${param.masterId != null ? param.masterId[0] : null}, score=${param.score != null ? param.score[0] : null}, sort=${param.sort != null ? param.sort[0] : null})}"
                class="pagination-next" th:text="#{next}">
                 Вперёд →
             </a>

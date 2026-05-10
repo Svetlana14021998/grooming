@@ -61,7 +61,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         if (sorted != null && !sorted.isBlank()) {
             String[] parts = sorted.split("_");
             if (parts.length != 2) {
-                throw new IncorrectRequestParamException("Incorrect request params");
+                throw new IncorrectRequestParamException("Incorrect request sorted params for search feedback");
             }
             String fieldName = parts[0];
             String sortType = parts[1];

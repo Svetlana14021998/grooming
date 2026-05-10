@@ -3,6 +3,7 @@ package org.example.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.converter.GroomingServiceToGroomingServiceDtoConverter;
 import org.example.dto.GroomingServiceDto;
+import org.example.exception.UnknownTypeException;
 import org.example.model.AnimalType;
 import org.example.model.GroomingService;
 import org.example.model.enums.GroomingServiceCategory;
@@ -10,13 +11,11 @@ import org.example.repository.AnimalTypeRepository;
 import org.example.repository.GroomingServiceRepository;
 import org.example.repository.spec.GroomingServiceSpecifications;
 import org.example.service.GroomingServiceService;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +33,11 @@ public class GroomingServiceServiceImpl implements GroomingServiceService {
         Specification<GroomingService> spec = Specification.allOf();
         if (animalTypeId != null) {
             AnimalType animalType = animalTypeRepository.findById(animalTypeId)
-                .orElseThrow(() -> new NullPointerException("NPE"));
+                .orElseThrow(() -> new UnknownTypeException("AnimalType with id=%s not found".formatted(animalTypeId)));
             spec = spec.and(GroomingServiceSpecifications.animalTypeEqualsTo(animalType));
         }
         if (category != null && !category.isBlank()) {
-            Locale currentLocale = LocaleContextHolder.getLocale();
-            GroomingServiceCategory groomingServiceCategory = GroomingServiceCategory.fromLocalizedName(category, currentLocale);
+            GroomingServiceCategory groomingServiceCategory = GroomingServiceCategory.fromLocalizedName(category);
             spec = spec.and(GroomingServiceSpecifications.categoryEqualsTo(groomingServiceCategory));
         }
         if (priceFrom != null) {
