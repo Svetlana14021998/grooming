@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Pet Grooming Salon</title>
+    <link rel="icon" type="image/png"  th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/contacts.css}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
+        </div>
+        <div class="nav-menu">
+            <a th:href="@{/main}" class="nav-link" id="main-id">
+                <span class="logo-icon">✨</span>
+                <span th:text="#{nav.main}">Main</span>
+            </a>
+            <a th:href="@{/services}" class="nav-link" id="services-id">
+                <span class="logo-icon">✂️</span>
+                <span th:text="#{nav.services}">Services</span>
+            </a>
+            <a th:href="@{/masters}" class="nav-link" id="masters-id">
+                <span class="logo-icon">👩‍🔧</span>
+                <span th:text="#{nav.masters}">Our masters</span>
+            </a>
+            <a th:href="@{/contacts}" class="nav-link" id="contacts-id">
+                <span class="logo-icon">📍</span>
+                <span th:text="#{nav.contacts}">Contacts</span>
+            </a>
+            <a th:href="@{/feedback}" class="nav-link" id="feedback-id">
+                <span class="logo-icon">💬</span>
+                <span th:text="#{nav.feedback}">Feedback</span>
+            </a>
+        </div>
+        <div class="language-switcher">
+            <a href="services.html" th:href="@{/services(lang=en)}"
+               class="lang-link" title="English" id="eng-id">
+                <span class="fi fi-gb"></span>
+            </a>
+            <a href="services.html" th:href="@{/services(lang=ru)}"
+               class="lang-link" title="Русский" id="rus-id">
+                <span class="fi fi-ru"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="contacts-page">
+    <h1>
+        <span>📞 </span>
+        <span th:text="#{nav.contacts}">Contacts</span>
+    </h1>
+
+    <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <div class="contacts-grid">
+        <div class="contacts-info">
+            <div class="info-card">
+                <h3>
+                    <span>📍 </span>
+                    <span th:text="#{address_msg}">Address</span>
+                    </h3>
+                <p th:text="#{address}">Moscow, st. Some Street, 10</p>
+            </div>
+
+            <div class="info-card">
+                <h3>
+                    <span>📞 </span>
+                    <span th:text="#{phones}">Phones</span>
+                </h3>
+                <p>+7 (999) 123-45-67</p>
+                <p>+7 (999) 765-43-21 (WhatsApp)</p>
+            </div>
+
+            <div class="info-card">
+                <h3>
+                    <span>✉️ </span>
+                    <span th:text="#{email_msg}">Email</span>
+                </h3>
+                <p>info@royalfluff.ru</p>
+            </div>
+
+            <div class="info-card">
+                <h3>
+                    <span>🕐 </span>
+                    <span th:text="#{work_hours}">Work hours:</span>
+                </h3>
+
+                <span th:text="${work_hours}">00-00</span>
+                <span th:text="#{everyday}">EveryDays</span>
+            </div>
+
+            <div class="info-card">
+                <h3>
+                    <span>📱 </span>
+                    <span th:text="#{networks}">Social networks</span>
+                </h3>
+                <div class="social-links">
+                    <p>📷 Instagram: <strong>@royalfluff</strong></p>
+                    <p>📨 Telegram: <strong>@royalfluff_salon</strong></p>
+                    <p>📘 VK: <strong>@royalfluff_official</strong></p>
+                    <p>💬 WhatsApp: <strong>+7 (999) 123-45-67</strong></p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="contacts-map">
+            <h3>
+                <span>🗺️ </span>
+                <span th:text="#{location_map}">Location map</span>
+            </h3>
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor:..."
+                    width="100%"
+                    height="450"
+                    frameborder="0">
+            </iframe>
+
+            <div class="how-to-get">
+                <h4 th:text="#{get_to}">How to get there:</h4>
+                <p>
+                    <span>🚇 </span>
+                    <span th:text="#{get_from_metro}">Metro "Tsvetnoy Boulevard" - 5 minutes walk</span>
+                </p>
+                <p>
+                    <span>🚌 </span>
+                    <span th:text="#{get_by_bus}">Stop "Flower" - buses 12, 45</span>
+                </p>
+                <p>
+                    <span>🚗 </span>
+                    <span th:text="#{parking}">Бесплатная парковка у ТЦ</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="feedback-form" id="feedbackForm">
+        <h3>
+            <span>✍️ </span>
+            <span th:text="#{write_to_us}">Write to us</span></h3>
+        <form th:action="@{/contacts/send}" method="post" novalidate th:object="${clientMessageDto}" >
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="text"
+                           th:field="*{name}"
+                           th:placeholder="#{your_name}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''">
+                    <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+
+                <div class="form-group">
+                    <input type="email"
+                           th:field="*{email}"
+                           th:placeholder="#{email_msg}"
+                           class="form-control"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''">
+                    <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="tel"
+                       th:field="*{phone}"
+                       th:placeholder="#{phone}"
+                       class="form-control"
+                       th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''">
+                <div class="error-message" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+            </div>
+
+            <div class="form-group">
+                <textarea th:field="*{message}"
+                          th:placeholder="#{yor_msg}"
+                          rows="5"
+                          class="form-control"
+                          th:classappend="${#fields.hasErrors('message')} ? 'is-invalid' : ''"></textarea>
+                <div class="error-message" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></div>
+            </div>
+
+            <button type="submit" th:text="#{send}">Send</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        <span th:text="#{zoo_info}">Royal Fluff — Pet Grooming Salon. All rights reserved.</span>
+    </p>
+    <p>
+        <span>📞 </span>
+        <span th:text="#{phone}">Phone:</span>
+        <span th:text="${phone}">+7(999)-999-99-99</span>
+        <span>| 📍 </span>
+        <span th:text="#{address}">SomeCity, st. SomeStreet, someHome</span>
+        <span>| 🕐 </span>
+        <span th:text="#{work_hours}">Work hours:</span>
+        <span th:text="${work_hours}">00-00</span>
+        <span th:text="#{everyday}">EveryDays</span>
+    </p>
+</footer>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const messages = {
+        scrollingToForm: /*[[#{to_feedback_form}]]*/ 'Go to feedback form...'
+    };
+    /*]]>*/
+</script>
+<script th:src="@{/js/contacts.js}"></script>
+
+</body>
+</html>
