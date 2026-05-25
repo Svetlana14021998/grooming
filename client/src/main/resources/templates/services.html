@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Pet Grooming Salon</title>
+    <link rel="icon" type="image/png"  th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/services.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
+        </div>
+        <div class="nav-menu">
+            <a th:href="@{/main}" class="nav-link" id="main-id">
+                <span class="logo-icon">✨</span>
+                <span th:text="#{nav.main}">Main</span>
+            </a>
+            <a th:href="@{/services}" class="nav-link" id="services-id">
+                <span class="logo-icon">✂️</span>
+                <span th:text="#{nav.services}">Services</span>
+            </a>
+            <a th:href="@{/masters}" class="nav-link" id="masters-id">
+                <span class="logo-icon">👩‍🔧</span>
+                <span th:text="#{nav.masters}">Our masters</span>
+            </a>
+            <a th:href="@{/contacts}" class="nav-link" id="contacts-id">
+                <span class="logo-icon">📍</span>
+                <span th:text="#{nav.contacts}">Contacts</span>
+            </a>
+            <a th:href="@{/feedback}" class="nav-link" id="feedback-id">
+                <span class="logo-icon">💬</span>
+                <span th:text="#{nav.feedback}">Feedback</span>
+            </a>
+        </div>
+        <div class="language-switcher">
+            <a href="services.html" th:href="@{/services(lang=en)}"
+               class="lang-link" title="English" id="eng-id">
+                <span class="fi fi-gb"></span>
+            </a>
+            <a href="services.html" th:href="@{/services(lang=ru)}"
+               class="lang-link" title="Русский" id="rus-id">
+                <span class="fi fi-ru"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="services-section">
+    <h3>
+        <span>⭐</span>
+        <span th:text="#{our_services}">Services</span>
+    </h3>
+
+
+    <form id="filterForm" th:action="@{/services}" method="get" class="filters-section">
+        <div class="filters-container">
+
+            <div class="filter-group">
+                <label class="filter-label" th:text="#{filter_animal}">Animal type:</label>
+                <select name="animalTypeId" class="filter-select" >
+                    <option value=""  selected th:text="#{all_animal}">Any type</option>
+                    <option th:each="t : ${animalTypes}"
+                            th:value="${t.id}"
+                            th:text="${t.name}"
+                            th:selected="${param.animalTypeId != null and param.animalTypeId[0] == t.id.toString()}"
+                    >
+                    </option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label" th:text="#{filter_price}">Price:</label>
+                <div class="price-range">
+                    <div class="price-input">
+                        <span>💰</span>
+                        <input type="number" name="priceFrom" class="price-field"
+                               placeholder="From" th:placeholder="#{price_from}"
+                               th:value="${param.priceFrom != null ? param.priceFrom[0] : ''}"
+                               onkeydown="if(event.key === '-' || event.key === 'Minus') return false;"
+                               oninput="if(this.value < 0) this.value = 0;">
+                        <span>-</span>
+                        <input type="number" name="priceTo" class="price-field"
+                               placeholder="To" th:placeholder="#{price_to}"
+                               th:value="${param.priceTo != null ? param.priceTo[0] : ''}"
+                               onkeydown="if(event.key === '-' || event.key === 'Minus') return false;"
+                               oninput="if(this.value < 0) this.value = 0;">
+                        <span>₽</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label" th:text="#{filter_category}">Service category:</label>
+                <select name="category" class="filter-select" >
+                    <option value="" selected th:text="#{all_categories}">Any category</option>
+                        <option th:each="c : ${allCategories}"
+                                th:value="${c}"
+                                th:text="${c}"
+                                th:selected="${param.category != null and param.category[0] == c}">
+                        </option>
+                      </select>
+            </div>
+
+            <div class="filter-buttons">
+                <button type="submit" class="filter-submit-btn">
+                    🔍 <span th:text="#{filter_apply}">Apply filters</span>
+                </button>
+                <a th:href="@{/services}" class="reset-filters-btn">
+                    🔄 <span th:text="#{filter_reset}">Reset all filters</span>
+                </a>
+            </div>
+        </div>
+    </form>
+    <div class="services-grid">
+        <div class="service-card" th:each="s : ${services}">
+            <div class="service-info">
+                <h4 th:text="${s.name}">Service Name</h4>
+
+                <div th:if="${s.isPopular}">
+                    <span class="popular-badge" th:text="#{popular}">Популярная</span>
+                </div>
+
+                <div class="service-duration">
+                    <span>⏱️</span>
+                    <span th:text="#{duration}">Duration:</span>
+                    <span th:text="${s.duration}">30</span>
+                    <span th:text="#{minutes}">min</span>
+                </div>
+
+                <div class="service-price">
+                    <span>💰</span>
+                    <span th:text="#{price}">Price:</span>
+                    <span th:text="${s.price}">1000</span>
+                    <span>₽</span>
+                </div>
+
+                <div class="service-animals">
+                    <span class="animals-label" th:text="#{suitable-for}">Suitable for:</span>
+                    <div class="animal-list">
+                        <span class="animal-item" th:each="type : ${s.animalTypes}" th:title="${type.name}">
+                            <span th:text="${type.icon}"></span>
+                            <span th:text="${type.name}"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <img class="service-image"
+                 th:src="@{${s.photoPath != null ? s.photoPath : '/images/services/default-service.png'}}"
+                 th:alt="${s.name}">
+
+            <div class="service-description">
+                <p th:text="${s.description}">Description</p>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${services == null or services.empty}" class="no-results">
+        <p>😔 <span th:text="#{no_results}">No services found matching your criteria</span></p>
+        <a th:href="@{/services}" class="reset-link" th:text="#{filter_reset}">Reset filters</a>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        <span th:text="#{zoo_info}">Royal Fluff — Pet Grooming Salon. All rights reserved.</span>
+    </p>
+    <p>
+        <span>📞 </span>
+        <span th:text="#{phone}">Phone:</span>
+        <span th:text="${phone}">+7(999)-999-99-99</span>
+        <span>| 📍 </span>
+        <span th:text="#{address}">SomeCity, st. SomeStreet, someHome</span>
+        <span>| 🕐 </span>
+        <span th:text="#{work_hours}">Work hours:</span>
+        <span th:text="${work_hours}">00-00</span>
+        <span th:text="#{everyday}">EveryDays</span>
+    </p>
+</footer>
+
+</body>
+</html>
