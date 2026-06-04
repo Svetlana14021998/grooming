@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - FAQ</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/faq.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
+        </div>
+        <div class="nav-menu">
+            <a th:href="@{/main}" class="nav-link">
+                <span class="logo-icon">✨</span>
+                <span th:text="#{nav.main}">Main</span>
+            </a>
+            <a th:href="@{/services}" class="nav-link">
+                <span class="logo-icon">✂️</span>
+                <span th:text="#{nav.services}">Services</span>
+            </a>
+            <a th:href="@{/masters}" class="nav-link">
+                <span class="logo-icon">👩‍🔧</span>
+                <span th:text="#{nav.masters}">Our masters</span>
+            </a>
+            <a th:href="@{/contacts}" class="nav-link">
+                <span class="logo-icon">📍</span>
+                <span th:text="#{nav.contacts}">Contacts</span>
+            </a>
+            <a th:href="@{/feedback}" class="nav-link">
+                <span class="logo-icon">💬</span>
+                <span th:text="#{nav.feedback}">Feedback</span>
+            </a>
+            <a th:href="@{/faq}" class="nav-link">
+                <span class="logo-icon">❓</span>
+                <span th:text="#{nav.faq}">FAQ</span>
+            </a>
+        </div>
+        <div class="language-switcher">
+            <a th:href="@{/faq(lang=en)}" class="lang-link" title="English">
+                <span class="fi fi-gb"></span>
+            </a>
+            <a th:href="@{/faq(lang=ru)}" class="lang-link" title="Русский">
+                <span class="fi fi-ru"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="faq-page">
+    <div class="faq-header">
+        <h1>
+            <span>❓</span>
+            <span th:text="#{faq_title}">Frequently Asked Questions</span>
+            <span>❓</span>
+        </h1>
+        <p class="faq-subtitle" th:text="#{faq_subtitle}">Find answers to the most common questions about our salon</p>
+    </div>
+
+    <div class="faq-search">
+        <input type="text" id="faqSearch" class="search-input"
+               th:placeholder="#{search_placeholder}"
+               placeholder="🔍 Search questions...">
+    </div>
+
+    <div th:each="entry : ${questionsByCategory}" class="category-card">
+        <div class="category-header" onclick="toggleCategory(this)">
+            <div class="category-title">
+                <span class="category-icon" th:text="${entry.key.icon}">🐕</span>
+                <h2 class="category-name" th:text="${entry.key.name}">Category Name</h2>
+            </div>
+            <span class="category-toggle">▼</span>
+        </div>
+        <div class="category-content">
+            <div th:each="question : ${entry.value}" class="faq-item">
+                <div class="faq-question" onclick="toggleQuestion(this)">
+                    <span class="question-icon">❓</span>
+                    <span class="question-text" th:text="${question.question}">Question text</span>
+                    <span class="question-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="answer-content">
+                        <span class="answer-icon">✅</span>
+                        <p th:text="${question.answer}">Answer text</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${questionsByCategory.isEmpty()}" class="no-results">
+        <div class="no-results-icon">🐾✨🐾</div>
+        <h3 th:text="#{no_questions_title}">No questions yet</h3>
+        <p th:text="#{no_questions_message}">Check back later for more information!</p>
+    </div>
+
+    <div class="contact-us">
+        <div class="contact-card">
+            <span>💬</span>
+            <div>
+                <h3 th:text="#{still_have_questions}">Still have questions?</h3>
+                <p th:text="#{contact_us_hint}">Contact us directly and we'll be happy to help!</p>
+            </div>
+            <a th:href="@{/contacts#feedbackForm}" class="contact-btn" th:text="#{contact_us}">Contact Us</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        <span th:text="#{zoo_info}">Royal Fluff — Pet Grooming Salon. All rights reserved.</span>
+    </p>
+    <p>
+        <span>📞 </span>
+        <span th:text="#{phone}">Phone:</span>
+        <span th:text="${phone}">+7(999)-999-99-99</span>
+        <span>| 📍 </span>
+        <span th:text="#{address}">SomeCity, st. SomeStreet, someHome</span>
+        <span>| 🕐 </span>
+        <span th:text="#{work_hours}">Work hours:</span>
+        <span th:text="${work_hours}">00-00</span>
+        <span th:text="#{everyday}">EveryDays</span>
+    </p>
+</footer>
+
+<script>
+    // Toggle category (open/close)
+ function toggleCategory(element) {
+     const categoryCard = element.closest('.category-card');
+     const content = categoryCard.querySelector('.category-content');
+     const toggleIcon = element.querySelector('.category-toggle');
+     const isOpen = content.classList.contains('open');
+
+     if (isOpen) {
+         content.style.maxHeight = null;
+         content.classList.remove('open');
+         if (toggleIcon) toggleIcon.style.transform = 'rotate(0deg)';
+     } else {
+         content.classList.add('open');
+         content.style.maxHeight = content.scrollHeight + 'px';
+         if (toggleIcon) toggleIcon.style.transform = 'rotate(180deg)';
+
+         content.addEventListener('transitionend', function() {
+             if (content.classList.contains('open')) {
+                 content.style.maxHeight = 'none';
+             }
+         }, { once: true });
+     }
+ }
+
+ // Toggle individual question
+ function toggleQuestion(element) {
+     const faqItem = element.closest('.faq-item');
+     if (!faqItem) return;
+
+     const answer = faqItem.querySelector('.faq-answer');
+     if (!answer) return;
+
+     const toggleIcon = element.querySelector('.question-toggle');
+     const isOpen = answer.classList.contains('open');
+
+     if (isOpen) {
+         answer.style.maxHeight = null;
+         answer.classList.remove('open');
+         if (toggleIcon) toggleIcon.style.transform = 'rotate(0deg)';
+     } else {
+         answer.classList.add('open');
+         answer.style.maxHeight = answer.scrollHeight + 'px';
+         if (toggleIcon) toggleIcon.style.transform = 'rotate(180deg)';
+
+         answer.addEventListener('transitionend', function() {
+             if (answer.classList.contains('open')) {
+                 answer.style.maxHeight = 'none';
+             }
+         }, { once: true });
+     }
+ }
+
+ // Search functionality
+ function initSearch() {
+     const searchInput = document.getElementById('faqSearch');
+     if (!searchInput) return;
+
+     searchInput.addEventListener('input', function() {
+         const searchTerm = this.value.toLowerCase().trim();
+         const allCategories = document.querySelectorAll('.category-card');
+
+         if (searchTerm === '') {
+             allCategories.forEach(category => {
+                 category.style.display = '';
+                 const items = category.querySelectorAll('.faq-item');
+                 items.forEach(item => {
+                     item.style.display = '';
+                     removeHighlight(item);
+                 });
+             });
+             return;
+         }
+
+         allCategories.forEach(category => {
+             const items = category.querySelectorAll('.faq-item');
+             let hasVisibleItems = false;
+
+             items.forEach(item => {
+                 const question = item.querySelector('.question-text')?.textContent.toLowerCase() || '';
+                 const answer = item.querySelector('.faq-answer p')?.textContent.toLowerCase() || '';
+
+                 const matches = question.includes(searchTerm) || answer.includes(searchTerm);
+
+                 if (matches) {
+                     item.style.display = '';
+                     highlightText(item, searchTerm);
+                     hasVisibleItems = true;
+                 } else {
+                     item.style.display = 'none';
+                     removeHighlight(item);
+                 }
+             });
+
+             category.style.display = hasVisibleItems ? '' : 'none';
+         });
+     });
+ }
+
+ function highlightText(item, searchTerm) {
+     const questionSpan = item.querySelector('.question-text');
+     if (questionSpan) {
+         const originalText = questionSpan.textContent;
+         const regex = new RegExp(`(${searchTerm})`, 'gi');
+         questionSpan.innerHTML = originalText.replace(regex, '<mark class="search-highlight">$1</mark>');
+     }
+ }
+
+ function removeHighlight(item) {
+     const questionSpan = item.querySelector('.question-text');
+     if (questionSpan && questionSpan.innerHTML !== questionSpan.textContent) {
+         questionSpan.innerHTML = questionSpan.textContent;
+     }
+ }
+
+ // Initialize on page load
+ document.addEventListener('DOMContentLoaded', function() {
+     const firstCategory = document.querySelector('.category-card');
+     if (firstCategory) {
+         const firstContent = firstCategory.querySelector('.category-content');
+         const firstToggle = firstCategory.querySelector('.category-toggle');
+         if (firstContent && !firstContent.classList.contains('open')) {
+             firstContent.classList.add('open');
+             firstContent.style.maxHeight = firstContent.scrollHeight + 'px';
+             if (firstToggle) firstToggle.style.transform = 'rotate(180deg)';
+
+             firstContent.addEventListener('transitionend', function() {
+                 if (firstContent.classList.contains('open')) {
+                     firstContent.style.maxHeight = 'none';
+                 }
+             }, { once: true });
+         }
+     }
+
+     initSearch();
+ });
+</script>
+
+</body>
+</html>

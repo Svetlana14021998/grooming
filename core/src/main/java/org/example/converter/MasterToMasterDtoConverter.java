@@ -15,8 +15,6 @@ public class MasterToMasterDtoConverter {
     @Value("${app.master-photo-path}")
     private String basePhotoPath;
 
-    private GroomingServiceToGroomingServiceDtoConverter groomingServiceDtoConverter;
-
     public MasterDto convert(Master master, Double rating, Long reviewScore) {
         if (master == null) {
             return null;
@@ -27,8 +25,8 @@ public class MasterToMasterDtoConverter {
             .id(master.getId())
             .pathToPhoto(basePhotoPath + "/" + master.getPhotoName())
             .rating(rating)
-
             .reviewsCount(reviewScore);
+
         return switch (currentLocale.getLanguage()) {
             case "ru" -> builder
                 .services(master.getServices().stream()
