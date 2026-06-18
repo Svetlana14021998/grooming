@@ -40,7 +40,7 @@ public class BaseControllerAdvice {
 
     @ExceptionHandler(IncorrectRequestParamException.class)
     public String catchIncorrectRequestParamException(IncorrectRequestParamException e, Model model) {
-        log.error("Incorrect request: {}", e.getMessage(),e);
+        log.error("Incorrect request: {}", e.getMessage(), e);
         model.addAttribute("errorCode", 400);
         return "error";
     }

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Редактирование профиля</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+</head>
+<body>
+
+<div class="admin-navbar">
+    <div class="admin-nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Royal Fluff <span class="admin-badge">ADMIN</span></span>
+        </div>
+        <div class="admin-nav-menu">
+            <a th:href="@{/dashboard}" class="nav-link active"><span>🏠</span> Главная</a>
+            <a th:href="@{/tasks}" class="nav-link"><span>📋</span> Мои задачи
+                <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
+            <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📅</span> Мое расписание</a>
+            <a th:href="@{/articles}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📝</span> Статьи</a>
+            <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
+            <a th:href="@{/profile}" class="nav-link"><span>👤</span> Профиль</a>
+        </div>
+        <div class="admin-user-menu">
+            <span class="user-name" sec:authentication="principal.fullName">Администратор</span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">🚪 Выход</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="profile-edit-page">
+    <div class="profile-edit-container">
+        <div class="profile-edit-header">
+            <h1>✏️ Редактирование профиля</h1>
+            <p>Обновите свою личную информацию</p>
+        </div>
+
+        <!-- Alert для отображения ошибок -->
+        <div id="alertContainer">
+            <div id="errorAlert" class="alert alert-danger">
+                <strong>❌ Ошибка валидации!</strong>
+                <ul id="errorList" style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;"></ul>
+            </div>
+        </div>
+
+        <form id="profileEditForm" class="profile-edit-form" enctype="multipart/form-data">
+            <div class="profile-edit-content">
+                <div class="avatar-section">
+                    <div class="avatar-preview">
+                        <img th:src="@{${user.pathToPhoto != null ? user.pathToPhoto : '/images/default-avatar.png'}}"
+                             th:alt="${user.fullName}" id="avatarPreview">
+                    </div>
+                    <div class="avatar-upload">
+                        <label for="photoFile" class="upload-btn">
+                            📷 Загрузить фото
+                        </label>
+                        <input type="file" id="photoFile" name="photoFile" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-card">
+                        <h3>📋 Основная информация</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Фамилия Имя</label>
+                                <input type="text" th:value="${user.fullName}" name="fullName" class="form-control input-readonly" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" th:value="${user.email}" name="email" class="form-control input-readonly" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                   th:value="${user.phone}" placeholder="+7 (999) 123-45-67">
+                            <div class="error-message" id="phoneError">Номер телефона должен соответствовать шаблону +7 (xxx) xxx-xx-xx</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>День рождения</label>
+                            <input type="text" th:value="${#temporals.format(user.birthday, 'dd.MM.yyyy')}"
+                                   id="birthdayDisplay"
+                                   class="form-control input-readonly" readonly>
+                            <input type="hidden" id="birthday" name="birthday" th:value="${#temporals.format(user.birthday, 'yyyy-MM-dd')}">
+                        </div>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>🎓 Образование и опыт</h3>
+
+                        <div class="form-group">
+                            <label>Образование</label>
+                            <textarea id="education" name="education" class="form-control" rows="2"
+                                      placeholder="Высшее образование, курсы повышения квалификации..."
+                                      th:text="${user.education}"></textarea>
+                            <div class="error-message" id="educationError">Необходимо указать образование</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Достижения</label>
+                            <textarea id="achievements" name="achievements" class="form-control" rows="2"
+                                      placeholder="Награды, сертификаты, участие в конкурсах..."
+                                      th:text="${user.achievements}"></textarea>
+                            <div class="error-message" id="achievementsError">Необходимо указать достижения</div>
+                        </div>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>📖 О себе</h3>
+
+                        <div class="form-group">
+                            <label>Коротко о себе</label>
+                            <textarea id="aboutMe" name="aboutMe" class="form-control" rows="3"
+                                      placeholder="Расскажите о себе, своих увлечениях, опыте работы..."
+                                      th:text="${user.aboutMe}"></textarea>
+                            <div class="error-message" id="aboutMeError">Необходимо указать краткую информацию о себе</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Хобби и увлечения</label>
+                            <textarea id="hobby" name="hobby" class="form-control" rows="2"
+                                      placeholder="Чем любите заниматься в свободное время..."
+                                      th:text="${user.hobby}"></textarea>
+                            <div class="error-message" id="hobbyError">Необходимо указать хобби</div>
+                        </div>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>🌐 Социальные сети</h3>
+                        <div class="error-message" id="socialError">Необходимо указать хотя бы одну социальную сеть</div>
+                        <div class="form-group">
+                            <label>Telegram</label>
+                            <input type="text" id="telegram" name="telegram" class="form-control"
+                                   th:value="${user.telegram}" placeholder="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label>VK</label>
+                            <input type="text" id="vk" name="vk" class="form-control"
+                                   th:value="${user.vk}" placeholder="vk.com/username или просто username">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">💾 Сохранить изменения</button>
+                        <a th:href="@{/profile}" class="cancel-btn">Отмена</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <p>© <span th:text="${#calendars.year(#calendars.createNow())}"></span> Royal Fluff — Административная панель</p>
+</footer>
+
+<script>
+    // Настройка маски для телефона
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            Inputmask({
+                mask: "+7 (999) 999-99-99",
+                showMaskOnHover: false,
+                clearMaskOnLostFocus: true,
+                placeholder: " ",
+                removeMaskOnSubmit: false,
+                onBeforePaste: function (pastedValue, opts) {
+                    return pastedValue.replace(/\D/g, '');
+                }
+            }).mask(phoneInput);
+        }
+    });
+
+    // Предпросмотр фото
+    document.getElementById('photoFile')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('avatarPreview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Функция для плавной прокрутки к заголовку "Редактирование профиля"
+    function scrollToHeader(offset = 20) {
+        const header = document.querySelector('.profile-edit-header');
+        if (header) {
+            const elementPosition = header.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Функция для отображения ошибок
+    function showErrors(errors) {
+        // Скрываем все ошибки
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('.form-control').forEach(el => {
+            el.classList.remove('is-invalid');
+        });
+
+        // Показываем ошибки из ответа
+        if (errors && Object.keys(errors).length > 0) {
+            const errorAlert = document.getElementById('errorAlert');
+            const errorList = document.getElementById('errorList');
+            errorList.innerHTML = '';
+
+            // Маппинг полей на ID ошибок
+            const errorMapping = {
+                'phone': 'phoneError',
+                'education': 'educationError',
+                'achievements': 'achievementsError',
+                'aboutMe': 'aboutMeError',
+                'hobby': 'hobbyError',
+                'social network': 'socialError'
+            };
+
+            // Маппинг полей на ID input'ов
+            const inputMapping = {
+                'phone': 'phone',
+                'education': 'education',
+                'achievements': 'achievements',
+                'aboutMe': 'aboutMe',
+                'hobby': 'hobby'
+            };
+
+            Object.keys(errors).forEach(field => {
+                const errorMessage = errors[field];
+
+                // Добавляем в список
+                const li = document.createElement('li');
+                li.textContent = errorMessage;
+                errorList.appendChild(li);
+
+                // Показываем ошибку возле поля
+                const errorElementId = errorMapping[field];
+                if (errorElementId) {
+                    const errorElement = document.getElementById(errorElementId);
+                    if (errorElement) {
+                        errorElement.textContent = errorMessage;
+                        errorElement.classList.add('show');
+                    }
+                }
+
+                // Подсвечиваем поле
+                const inputId = inputMapping[field];
+                if (inputId) {
+                    const inputElement = document.getElementById(inputId);
+                    if (inputElement) {
+                        inputElement.classList.add('is-invalid');
+                    }
+                }
+            });
+
+            // Показываем общий alert
+            errorAlert.classList.add('show');
+
+            // Прокручиваем к заголовку
+            scrollToHeader(20);
+        }
+    }
+
+    // Отправка формы
+    document.getElementById('profileEditForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Очищаем предыдущие ошибки
+        document.getElementById('errorAlert').classList.remove('show');
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('.form-control').forEach(el => {
+            el.classList.remove('is-invalid');
+        });
+
+        const userData = {
+            fullName: document.querySelector('[name="fullName"]')?.value || '',
+            email: document.querySelector('[name="email"]')?.value || '',
+            phone: document.getElementById('phone')?.value || '',
+            birthday: document.getElementById('birthday')?.value || '',
+            education: document.getElementById('education')?.value || '',
+            achievements: document.getElementById('achievements')?.value || '',
+            aboutMe: document.getElementById('aboutMe')?.value || '',
+            hobby: document.getElementById('hobby')?.value || '',
+            telegram: document.getElementById('telegram')?.value || '',
+            vk: document.getElementById('vk')?.value || ''
+        };
+
+        const formData = new FormData();
+
+        formData.append('data', new Blob([JSON.stringify(userData)], {
+            type: 'application/json'
+        }));
+
+        const photoFile = document.getElementById('photoFile').files[0];
+        if (photoFile) {
+            formData.append('photo', photoFile);
+        }
+
+        try {
+            const response = await fetch('/adminapp/profile', {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                // Просто редирект на страницу профиля
+                window.location.href = '/adminapp/profile?success=true';
+            } else {
+                // Получаем ошибки
+                const errors = await response.json();
+                showErrors(errors);
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            // Показываем общую ошибку
+            const errorAlert = document.getElementById('errorAlert');
+            const errorList = document.getElementById('errorList');
+            errorList.innerHTML = `<li>Ошибка соединения с сервером</li>`;
+            errorAlert.classList.add('show');
+
+            // Прокручиваем к заголовку
+            scrollToHeader(20);
+        }
+    });
+</script>
+
+</body>
+</html>

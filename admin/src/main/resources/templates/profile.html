@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Мой профиль</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+</head>
+<body>
+
+<div class="admin-navbar">
+    <div class="admin-nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Royal Fluff <span class="admin-badge">ADMIN</span></span>
+        </div>
+        <div class="admin-nav-menu">
+            <a th:href="@{/dashboard}" class="nav-link"><span>🏠</span> Главная</a>
+            <a th:href="@{/tasks}" class="nav-link"><span>📋</span> Мои задачи
+                <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
+            <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📅</span> Мое расписание</a>
+            <a th:href="@{/articles}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📝</span> Статьи</a>
+            <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
+            <a th:href="@{/profile}" class="nav-link active"><span>👤</span> Профиль</a>
+        </div>
+        <div class="admin-user-menu">
+            <span class="user-name" sec:authentication="principal.fullName">Администратор</span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">🚪 Выход</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="profile-page">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>👤 Мой профиль</h1>
+            <p>Личная информация и настройки</p>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-avatar-section">
+                <div class="profile-avatar">
+                    <img th:src="@{${user.pathToPhoto != null ? user.pathToPhoto : '/images/default-avatar.png'}}"
+                         th:alt="${user.fullName}">
+                </div>
+                <h2 th:text="${user.fullName}">Иван Иванов</h2>
+                <span class="role-badge" th:classappend="${user.role == 'ADMIN' ? 'role-admin' : (user.role == 'MANAGER' ? 'role-manager' : 'role-master')}"
+                      th:text="${user.role}">РОЛЬ</span>
+            </div>
+
+            <div class="profile-info-section">
+                <div class="info-card">
+                    <h3>📋 Основная информация</h3>
+                    <div class="info-row">
+                        <span class="info-label">📧 Email:</span>
+                        <span class="info-value" th:text="${user.email}">user@example.com</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">📞 Телефон:</span>
+                        <span class="info-value" th:text="${user.phone}">+7 (999) 123-45-67</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🎂 День рождения:</span>
+                        <span class="info-value" th:text="${#temporals.format(user.birthday, 'dd.MM.yyyy')}">01.01.1990</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🎓 Образование и опыт</h3>
+                    <div class="info-row">
+                        <span class="info-label">🎓 Образование:</span>
+                        <span class="info-value" th:text="${user.education != null ? user.education : 'Не указано'}">Высшее</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">🏆 Достижения:</span>
+                        <span class="info-value" th:text="${user.achievements != null ? user.achievements : 'Не указано'}">-</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>📖 О себе</h3>
+                    <div class="about-me" th:text="${user.aboutMe != null ? user.aboutMe : 'Информация о себе не заполнена'}">
+                        Краткая информация о сотруднике...
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🎨 Хобби и увлечения</h3>
+                    <div class="info-row">
+                        <span class="info-value" th:text="${user.hobby != null ? user.hobby : 'Не указано'}">-</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🌐 Социальные сети</h3>
+                    <div class="social-links-profile">
+                        <div th:if="${user.telegram != null and !user.telegram.isEmpty()}" class="social-item">
+                            <span class="social-icon">📱</span>
+                            <span class="social-label">Telegram:</span>
+                            <span class="social-value"><span th:text="${user.telegram}">username</span></span>
+                        </div>
+                        <div th:if="${user.vk != null and !user.vk.isEmpty()}" class="social-item">
+                            <span class="social-icon">🌐</span>
+                            <span class="social-label">VK:</span>
+                            <span class="social-value" th:text="${user.vk}">vk.com/username</span>
+                        </div>
+                        <div th:unless="${(user.telegram != null and !user.telegram.isEmpty()) or (user.vk != null and !user.vk.isEmpty())}">
+                            <span class="info-value">Не указано</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <a th:href="@{/profile/edit}" class="edit-profile-btn">
+                        ✏️ Редактировать профиль
+                    </a>
+                    <a th:href="@{/profile/change-password}" class="change-password-btn">🔐 Изменить пароль</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <p>© <span th:text="${#calendars.year(#calendars.createNow())}"></span> Royal Fluff — Административная панель</p>
+</footer>
+
+<script>
+    function showToast(message, type = 'success') {
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) {
+            existingToast.remove();
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+
+        let icon = '✅';
+
+        toast.innerHTML = `
+            <span>${icon}</span>
+            <span>${message}</span>
+            <button onclick="this.parentElement.remove()">✕</button>
+        `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast && toast.parentElement) {
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    if (toast && toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 300);
+            }
+        }, 4000);
+    }
+
+   document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('success') === 'true') {
+        showToast('Профиль успешно обновлён!', 'success');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+
+
+</script>
+
+</body>
+</html>

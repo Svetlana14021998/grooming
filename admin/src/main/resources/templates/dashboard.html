@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Административная панель</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+</head>
+<body>
+
+<div class="admin-navbar">
+    <div class="admin-nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Royal Fluff <span class="admin-badge">ADMIN</span></span>
+        </div>
+        <div class="admin-nav-menu">
+            <a th:href="@{/dashboard}" class="nav-link active"><span>🏠</span> Главная</a>
+            <a th:href="@{/tasks}" class="nav-link"><span>📋</span> Мои задачи
+                <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
+            <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📅</span> Мое расписание</a>
+            <a th:href="@{/articles}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📝</span> Статьи</a>
+            <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
+            <a th:href="@{/profile}" class="nav-link"><span>👤</span> Профиль</a>
+        </div>
+        <div class="admin-user-menu">
+           <span class="user-name" sec:authentication="principal.fullName">Администратор</span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">🚪 Выход</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>🏠 Административная панель</h1>
+        <p>Добро пожаловать в систему управления салоном Royal Fluff</p>
+    </div>
+
+    <div class="welcome-card">
+        <div class="welcome-content">
+            <h2>👋 Добрый день, <span class="user-name-pannel" sec:authentication="principal.firstName">Администратор</span>!</h2>
+            <p>Вы вошли в админ-панель. Здесь вы можете управлять:</p>
+            <ul>
+                <li>📋 <strong>Задачами</strong> — просмотр и обработка назначенных Вам задач</li>
+                <li sec:authorize="hasRole('MASTER')">📅 <strong>Расписанием</strong> — управление рабочим графиком</li>
+                <li sec:authorize="hasRole('MASTER')">📝 <strong>Статьями</strong> — создание и редактирование блога и FAQ</li>
+                <li>👤 <strong>Профилем</strong> — настройка личных данных</li>
+            </ul>
+        </div>
+        <div class="welcome-icon">🐾✨🐾</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-info">
+                <h3>Новых задач</h3>
+                <div class="stat-value" th:text="${pendingTasksCount != null ? pendingTasksCount : 0}">0</div>
+                <span class="stat-trend">требуют внимания</span>
+            </div>
+        </div>
+        <div class="stat-card" sec:authorize="hasRole('MASTER')">
+            <div class="stat-icon">📅</div>
+            <div class="stat-info">
+                <h3>Записей сегодня</h3>
+                <div class="stat-value" th:text="${todayAppointmentsCount != null ? todayAppointmentsCount : 0}">0</div>
+                <span class="stat-trend">на сегодня</span>
+            </div>
+        </div>
+        <div class="stat-card" sec:authorize="hasRole('MASTER')">
+            <div class="stat-icon">📝</div>
+            <div class="stat-info">
+                <h3>Статей в блоге</h3>
+                <div class="stat-value" th:text="${articlesCount != null ? articlesCount : 0}">0</div>
+                <span class="stat-trend">опубликовано</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="recent-section">
+        <div class="section-header">
+            <h3>📋 Последние задачи</h3>
+            <a th:href="@{/tasks}" class="view-all">Все задачи →</a>
+        </div>
+        <div class="recent-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Тип задачи</th>
+                    <th>Сообщение</th>
+                    <th>Статус</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${recentTasks}" th:if="${recentTasks != null and !recentTasks.isEmpty()}">
+                    <td th:text="${#temporals.format(task.createdAt, 'dd.MM.yyyy')}">01.01.2025</td>
+                    <td th:text="${task.type}">Иван Иванов</td>
+                    <td class="message-preview" th:text="${task.message}">Текст сообщения...</td>
+                    <td>
+                        <span class="status-badge warning" th:if="${!task.emailSent}">Не обработано</span>
+                        <span class="status-badge success" th:if="${task.emailSent}">Обработано</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/tasks/{id}(id=${task.id})}" class="action-link">Подробнее</a>
+                    </td>
+                </tr>
+                <tr th:if="${recentTasks == null or recentTasks.isEmpty()}">
+                    <td colspan="5" class="empty-row">Нет новых задач для обработки</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div th:if="${users != null and !users.isEmpty()}" class="birthday-celebrants">
+        <div class="celebrants-header">
+            <h3>🎂 Именинники этого месяца</h3>
+            <div class="celebrants-cake">🎉🎈🎂</div>
+        </div>
+        <div class="celebrants-grid">
+            <div th:each="user : ${users}" class="celebrant-card">
+                <div class="celebrant-avatar">
+                    <img th:src="@{${user.pathToPhoto != null ? user.pathToPhoto : '/images/default-avatar.png'}}"
+                         th:alt="${user.fullName}" />
+                </div>
+                <div class="celebrant-info">
+                    <div class="celebrant-name" th:text="${user.fullName}">Максим Новиков</div>
+                    <div class="celebrant-date">
+                        <span class="birthday-icon">🎈</span>
+                        <span th:text="${#temporals.format(user.birthday, 'dd MMMM')}">15 июня</span>
+                    </div>
+                </div>
+                <div class="celebrant-gift">🎁</div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${users != null and !users.isEmpty()}" class="no-celebrants">
+        <p>🎉 В этом месяце именинников нет.</p>
+    </div>
+
+    <div class="info-section">
+        <div class="info-card">
+            <h3>ℹ️ О приложении</h3>
+            <p><strong>Royal Fluff Admin Panel</strong> — система управления груминг-салоном.</p>
+            <p>Разработано для <strong>Royal Fluff Pet Grooming Salon</strong></p>
+        </div>
+        <div class="info-card">
+            <h3>📞 Контакты поддержки</h3>
+            <p>📧 Email: <span th:text="${email}">support@royalfluff.ru</span></p>
+            <p>📱 Телефон: <span th:text="${phone}">+7 (999) 123-45-67</span> </p>
+            <p>🕐 Время работы: <span th:text="${work_hours}">10:00 - 20:00</span></p>
+        </div>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        Royal Fluff — Административная панель. Все права защищены.
+    </p>
+</footer>
+</body>
+</html>

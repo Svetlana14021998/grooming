@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.enums.EmailTemplate;
 
+import java.util.Map;
+
 @Data
 @Builder
 public class EmailRequest {
@@ -14,5 +16,5 @@ public class EmailRequest {
 
     private EmailTemplate template;
 
-    private Object data;
+    private Map<String, Object> data;
 }

@@ -1,7 +1,7 @@
 server:
-  port: 8081
+  port: 8082
   servlet:
-    context-path: /groomingapp
+    context-path: /adminapp
 spring:
   mail:
     host: smtp.mail.ru
@@ -18,8 +18,6 @@ spring:
           socketFactory:
             port: 465
             class: javax.net.ssl.SSLSocketFactory
-  messages:
-    encoding: UTF-8
   datasource:
     url: jdbc:postgresql://localhost:5432/zoo-info
     username: ${DB_USERNAME}
@@ -30,14 +28,22 @@ spring:
     hibernate:
       ddl-auto: validate
       default_batch_fetch_size: 20
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 400KB
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 app:
-  email: info@royalfluff.ru
-  phone: +7 (999) 123-45-67
+  email: support@royalfluff.ru
+  phone: +7 (911) 765-43-21
   work-hours: 10:00 - 20:00
   master-photo-path: /images/masters
   service-photo-path: /images/services
+  employee-photo-path: /images/employees
   admin-email: ${ADMIN_EMAIL}
+  mail-printform-path: /mail/
+  mail:
+    username: ${MAIL_USERNAME}

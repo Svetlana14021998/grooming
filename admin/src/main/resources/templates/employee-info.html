@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Сотрудники</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/employee-info.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+</head>
+<body>
+
+<div class="admin-navbar">
+    <div class="admin-nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Royal Fluff <span class="admin-badge">ADMIN</span></span>
+        </div>
+        <div class="admin-nav-menu">
+            <a th:href="@{/dashboard}" class="nav-link active"><span>🏠</span> Главная</a>
+            <a th:href="@{/tasks}" class="nav-link"><span>📋</span> Мои задачи
+                <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
+            <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📅</span> Мое расписание</a>
+            <a th:href="@{/articles}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📝</span> Статьи</a>
+            <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
+            <a th:href="@{/profile}" class="nav-link"><span>👤</span> Профиль</a>
+        </div>
+        <div class="admin-user-menu">
+            <span class="user-name" sec:authentication="principal.fullName">Администратор</span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">🚪 Выход</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>👥 Сотрудники</h1>
+    </div>
+
+    <!-- Блок фильтров -->
+    <div class="filters-section">
+        <form th:action="@{/employee-info}" method="get" class="filters-form">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label>🔍 Поиск по ФИО</label>
+                    <input type="text"
+                           name="searchTerm"
+                           class="filter-input"
+                           placeholder="Введите имя или фамилию..."
+                           th:value="${param.searchTerm != null ? param.searchTerm[0] : ''}">
+                </div>
+                <div class="filter-group">
+                    <label>👔 Роль</label>
+                    <select name="role" class="filter-select">
+                        <option value="" th:selected="${param.role == null or param.role[0] == ''}">Все роли</option>
+                        <option value="ADMIN" th:selected="${param.role != null and param.role[0] == 'ADMIN'}">Администратор</option>
+                        <option value="MANAGER" th:selected="${param.role != null and param.role[0] == 'MANAGER'}">Менеджер</option>
+                        <option value="MASTER" th:selected="${param.role != null and param.role[0] == 'MASTER'}">Мастер</option>
+                    </select>
+                </div>
+                <div class="filter-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="isBirthday" value="true"
+                               th:checked="${param.isBirthday != null and param.isBirthday[0] == 'true'}">
+                        <span>🎂 Именинники месяца</span>
+                    </label>
+                </div>
+
+                <div class="filter-group">
+                    <label>📄 Записей на странице</label>
+                    <select name="size" class="filter-select" >
+                        <option value="5" th:selected="${param.size == null or param.size[0] == '5'}">5</option>
+                        <option value="10" th:selected="${param.size != null and param.size[0] == '10'}">10</option>
+                        <option value="15" th:selected="${param.size != null and param.size[0] == '15'}">15</option>
+                        <option value="20" th:selected="${param.size != null and param.size[0] == '20'}">20</option>
+                    </select>
+                </div>
+                <div class="filter-buttons">
+                    <button type="submit" class="filter-btn apply">Применить</button>
+                    <a th:href="@{/employee-info}" class="filter-btn reset">Сбросить</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Список сотрудников -->
+    <div class="employees-grid">
+        <div th:each="emp : ${employees.content}" class="employee-card"
+             th:data-birthday="${emp.birthday}">
+            <div class="employee-photo">
+                <img th:src="@{${emp.pathToPhoto != null ? emp.pathToPhoto : '/images/default-user.png'}}"
+                     th:alt="${emp.fullName}">
+            </div>
+            <div class="employee-info">
+                <h3 th:text="${emp.fullName}">Иван Иванов</h3>
+                <div class="employee-details">
+                    <p>
+                        <span>🎂</span>
+                        <span th:text="${#temporals.format(emp.birthday, 'dd.MM.yyyy')}">01.01.1990</span>
+                    </p>
+                    <p><span>📧</span> <span th:text="${emp.email}">user@example.com</span></p>
+                    <p><span>📞</span> <span th:text="${emp.phone}">+7 (999) 123-45-67</span></p>
+                    <p><span>🔑</span>
+                        <span class="role-badge"
+                              th:classappend="${emp.roleCode == 'ADMIN' ? 'role-admin' : (emp.roleCode == 'MANAGER' ? 'role-manager' : 'role-master')}"
+                              th:text="${emp.roleCode}">ROLE</span>
+                    </p>
+                    <p th:if="${emp.specialisations != null and !emp.specialisations.isEmpty()}">
+                        <span>✂️</span>
+                        <span class="specialisations-list">
+                            <span th:each="spec : ${emp.specialisations}" class="specialisation-tag" th:text="${spec}"></span>
+                        </span>
+                    </p>
+                    <p th:if="${emp.aboutMe != null and !emp.aboutMe.isEmpty()}">
+                        <span class="about-me-text" th:text="${emp.aboutMe}"></span>
+                    </p>
+                    <p th:if="${emp.achievements != null and !emp.achievements.isEmpty()}">
+                        <span>🏆</span>
+                        <span th:text="${emp.achievements}"></span>
+                    </p>
+                    <div th:if="${(emp.telegram != null and !emp.telegram.isEmpty()) or (emp.vk != null and !emp.vk.isEmpty())}" class="social-links">
+                        <span>🌐</span>
+                        <div class="social-list">
+                            <span th:if="${emp.telegram != null and !emp.telegram.isEmpty()}" class="social-text">Telegram: <span th:text="${emp.telegram}"></span></span>
+                            <span th:if="${emp.vk != null and !emp.vk.isEmpty()}" class="social-text">VK: <span th:text="${emp.vk}"></span></span>
+                        </div>
+                    </div>
+                    <p th:if="${emp.hobby != null and !emp.hobby.isEmpty()}">
+                        <span>🎨</span>
+                        <span th:text="${emp.hobby}"></span>
+                    </p>
+                    <p th:if="${emp.education != null and !emp.education.isEmpty()}">
+                        <span>🎓</span>
+                        <span th:text="${emp.education}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок пагинации -->
+    <div th:if="${employees.totalPages > 1}" class="pagination-container">
+        <div class="pagination">
+            <!-- Первая страница -->
+            <a th:if="${!employees.first}"
+               th:href="@{/employee-info(pageNumber=0, size=${employees.size}, searchTerm=${param.searchTerm != null ? param.searchTerm[0] : ''}, role=${param.role != null ? param.role[0] : ''})}"
+               class="pagination-btn first">⏮ Первая</a>
+
+            <!-- Предыдущая страница -->
+            <a th:if="${!employees.first}"
+               th:href="@{/employee-info(pageNumber=${employees.number - 1}, size=${employees.size}, searchTerm=${param.searchTerm != null ? param.searchTerm[0] : ''}, role=${param.role != null ? param.role[0] : ''})}"
+               class="pagination-btn prev">◀ Назад</a>
+
+            <!-- Номера страниц -->
+            <div class="pagination-pages">
+                <a th:each="i : ${#numbers.sequence(0, employees.totalPages - 1)}"
+                   th:if="${i >= employees.number - 2 and i <= employees.number + 2}"
+                   th:href="@{/employee-info(pageNumber=${i}, size=${employees.size}, searchTerm=${param.searchTerm != null ? param.searchTerm[0] : ''}, role=${param.role != null ? param.role[0] : ''})}"
+                   th:class="${i == employees.number} ? 'pagination-page active' : 'pagination-page'"
+                   th:text="${i + 1}">
+                </a>
+            </div>
+
+            <!-- Следующая страница -->
+            <a th:if="${!employees.last}"
+               th:href="@{/employee-info(pageNumber=${employees.number + 1}, size=${employees.size}, searchTerm=${param.searchTerm != null ? param.searchTerm[0] : ''}, role=${param.role != null ? param.role[0] : ''})}"
+               class="pagination-btn next">Вперед ▶</a>
+
+            <!-- Последняя страница -->
+            <a th:if="${!employees.last}"
+               th:href="@{/employee-info(pageNumber=${employees.totalPages - 1}, size=${employees.size}, searchTerm=${param.searchTerm != null ? param.searchTerm[0] : ''}, role=${param.role != null ? param.role[0] : ''})}"
+               class="pagination-btn last">Последняя ⏭</a>
+        </div>
+
+        <!-- Информация о странице -->
+        <div class="pagination-info">
+            Показано <span th:text="${employees.number * employees.size + 1}">0</span> -
+            <span th:text="${employees.number * employees.size + employees.numberOfElements}">0</span>
+            из <span th:text="${employees.totalElements}">0</span> сотрудников
+        </div>
+    </div>
+
+    <div th:if="${employees == null or employees.content == null or employees.content.isEmpty()}" class="no-results">
+        <div class="no-results-icon">👥</div>
+        <h3>Нет сотрудников</h3>
+        <p>Пока не добавлено ни одного пользователя.</p>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <p>© <span th:text="${#calendars.year(#calendars.createNow())}"></span> Royal Fluff — Административная панель</p>
+</footer>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentMonth = new Date().getMonth();
+        const cards = document.querySelectorAll('.employee-card');
+
+        cards.forEach(card => {
+            const birthdayAttr = card.getAttribute('data-birthday');
+            if (!birthdayAttr) return;
+            const birthdayDate = new Date(birthdayAttr);
+            if (isNaN(birthdayDate.getTime())) return;
+            if (birthdayDate.getMonth() === currentMonth) {
+                card.classList.add('birthday-month');
+                const birthdaySpan = card.querySelector('.employee-details p:first-child span:last-child');
+                if (birthdaySpan && !birthdaySpan.querySelector('.birthday-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'birthday-badge';
+                    badge.textContent = '🎉 Именинник!';
+                    birthdaySpan.appendChild(badge);
+                }
+            }
+        });
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum EmailTemplate {
 
-    CONTACT_FORM("contact-form","Сообщение от клиента с сайта")
-  ;
+    CONTACT_FORM("contact-form", "Сообщение от клиента с сайта"),
+    RESET_PASSWORD("reset-password", "Сброс пароля");
 
     private final String templateName;
 

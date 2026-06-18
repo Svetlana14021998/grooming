@@ -28,7 +28,9 @@ public class EmailServiceImpl implements EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            helper.setTo(emailRequest.getTo());
+            //todo заглушка. письма должны отправляться на переданный email
+           // helper.setTo(emailRequest.getTo());
+            helper.setTo(config.getAdminEmail());
             helper.setSubject(emailRequest.getSubject());
             helper.setFrom(config.getAutoSendEmail());
             helper.setText(buildEmailContent(emailRequest), true);

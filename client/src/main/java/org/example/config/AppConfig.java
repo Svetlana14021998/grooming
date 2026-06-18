@@ -18,13 +18,4 @@ public class AppConfig {
 
     @Value("${app.work-hours}")
     private String workHours;
-
-    @Value("${app.admin-email}")
-    private String adminEmail;
-
-    @Value("${spring.mail.username}")
-    private String autoSendEmail;
-
-    @Value("${app.mail-printform-path}")
-    private String mailPrintFormPath;
 }
