@@ -8,7 +8,6 @@ import org.example.dto.UserDto;
 import org.example.dto.UserShortDto;
 import org.example.enums.EmailTemplate;
 import org.example.enums.UserRole;
-import org.example.exception.CantSaveFileException;
 import org.example.exception.EntityNotFoundException;
 import org.example.exception.IncorrectPasswordException;
 import org.example.exception.IncorrectRequestParamException;
@@ -17,6 +16,7 @@ import org.example.helper.PasswordGenerator;
 import org.example.model.AppUser;
 import org.example.repository.UserRepository;
 import org.example.repository.spec.UserSpecification;
+import org.example.service.ImageService;
 import org.example.service.UserService;
 import org.example.validator.PasswordValidator;
 import org.example.validator.ProfileValidator;
@@ -29,10 +29,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +51,8 @@ public class UserServiceImpl implements UserService {
     private final AppConfig appConfig;
 
     private final ProfileValidator profileValidator;
+
+    private final ImageService imageService;
 
     @Override
     public List<UserShortDto> getUsersWithBirthdayInThisMonth() {
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
         user = user2UserDtoConverter.convert(user, dto);
         userRepository.save(user);
         if (photo != null && !photo.isEmpty()) {
-            savePhoto(photo, user.getPhotoName());
+            imageService.savePhoto(photo, user.getPhotoName(), "admin", "employees");
         }
     }
 
@@ -153,31 +151,5 @@ public class UserServiceImpl implements UserService {
             "phone", appConfig.getPhone(),
             "email", appConfig.getEmail());
         contactService.sendEmailToEmployee(appUser.getEmail(), data, EmailTemplate.RESET_PASSWORD);
-    }
-
-    /**
-     * TODO
-     * Костыль. Так как фото храняться в папке static, она компилируется и храниться в target->
-     * при изменении во время работы программы ничего не подтягивается в target и используется старое изображение
-     *  Решение в перспективе - использовать для хранения внешнюю папку
-     *
-     * @param photo     новое фото
-     * @param photoName названия фото для пользователя
-     */
-    private void savePhoto(MultipartFile photo, String photoName) {
-        String[] paths = {
-            "admin/src/main/resources/static/images/employees/",
-            "admin/target/classes/static/images/employees/"
-        };
-
-        for (String path : paths) {
-            Path uploadPath = Paths.get(path);
-            try {
-                Files.createDirectories(uploadPath);
-                Files.write(uploadPath.resolve(photoName), photo.getBytes());
-            } catch (IOException e) {
-                throw new CantSaveFileException();
-            }
-        }
     }
 }

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.config.AppConfig;
@@ -25,7 +26,13 @@ public class BaseControllerAdvice {
     private final MessageSource messageSource;
 
     @ModelAttribute
-    public void addGlobalAttributes(Model model) {
+    public void addGlobalAttributes(HttpServletRequest request,Model model) {
+        String currentUrl = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (currentUrl.startsWith(contextPath)) {
+            currentUrl = currentUrl.substring(contextPath.length());
+        }
+        model.addAttribute("currentUrl", currentUrl);
         model.addAttribute("email", appConfig.getEmail());
         model.addAttribute("phone", appConfig.getPhone());
         model.addAttribute("work_hours", appConfig.getWorkHours());

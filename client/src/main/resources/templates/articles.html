@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Pet Grooming Salon</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/articles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+    <script th:src="@{/js/article_type_color_generate.js}" defer></script>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
+        </div>
+        <div class="nav-menu">
+            <a th:href="@{/main}" class="nav-link" id="main-id">
+                <span class="logo-icon">✨</span>
+                <span th:text="#{nav.main}">Main</span>
+            </a>
+            <a th:href="@{/services}" class="nav-link" id="services-id">
+                <span class="logo-icon">✂️</span>
+                <span th:text="#{nav.services}">Services</span>
+            </a>
+            <a th:href="@{/masters}" class="nav-link" id="masters-id">
+                <span class="logo-icon">👩‍🔧</span>
+                <span th:text="#{nav.masters}">Our masters</span>
+            </a>
+            <a th:href="@{/contacts}" class="nav-link" id="contacts-id">
+                <span class="logo-icon">📍</span>
+                <span th:text="#{nav.contacts}">Contacts</span>
+            </a>
+            <a th:href="@{/feedback}" class="nav-link" id="feedback-id">
+                <span class="logo-icon">💬</span>
+                <span th:text="#{nav.feedback}">Feedback</span>
+            </a>
+            <a th:href="@{/faq}" class="nav-link">
+                <span class="logo-icon">❓</span>
+                <span th:text="#{nav.faq}">FAQ</span>
+            </a>
+            <a th:href="@{/article}" class="nav-link active" id="articles-id">
+                <span class="logo-icon">📝</span>
+                <span th:text="#{nav.articles}">Articles</span>
+            </a>
+        </div>
+        <div class="language-switcher">
+            <a th:href="@{${currentUrl}(lang=en)}" class="lang-link" title="English">
+                <span class="fi fi-gb"></span>
+            </a>
+            <a th:href="@{${currentUrl}(lang=ru)}" class="lang-link" title="Русский">
+                <span class="fi fi-ru"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="page-header">
+        <h1>
+            <span>📝</span>
+            <span th:text="#{articles.title}">Useful Articles</span>
+        </h1>
+        <p class="subtitle" th:text="#{articles.subtitle}">Tips and advice from our grooming experts</p>
+    </div>
+
+    <div class="sort-panel">
+        <form method="get" th:action="@{/article}" class="sort-form">
+            <div class="sort-group">
+                <label for="sort" class="sort-label">📊 <span th:text="#{articles.sort.sort_by}">Sort by:</span></label>
+                <select name="sort" id="sort" class="sort-select">
+                    <option value="creatingDate_desc" th:selected="${param.sort == null or param.sort[0] == 'creatingDate_desc'}">
+                        📅 <span th:text="#{articles.sort.newest}">Newest first</span>
+                    </option>
+                    <option value="creatingDate_asc" th:selected="${param.sort != null and param.sort[0] == 'creatingDate_asc'}">
+                        📅 <span th:text="#{articles.sort.oldest}">Oldest first</span>
+                    </option>
+                    <option value="readingTimeMinutes_asc" th:selected="${param.sort != null and param.sort[0] == 'readingTimeMinutes_asc'}">
+                        ⏱️ <span th:text="#{articles.sort.shortest}">Shortest first</span>
+                    </option>
+                    <option value="readingTimeMinutes_desc" th:selected="${param.sort != null and param.sort[0] == 'readingTimeMinutes_desc'}">
+                        ⏱️ <span th:text="#{articles.sort.longest}">Longest first</span>
+                    </option>
+                    <option value="viewsCount_asc" th:selected="${param.sort != null and param.sort[0] == 'viewsCount_asc'}">
+                        👁️ <span th:text="#{articles.sort.lessViews}">Less Views first</span>
+                    </option>
+                    <option value="viewsCount_desc" th:selected="${param.sort != null and param.sort[0] == 'viewsCount_desc'}">
+                        👁️ <span th:text="#{articles.sort.moreViews}">More Views first</span>
+                    </option>
+                </select>
+            </div>
+
+            <div class="sort-group">
+                <label for="type" class="sort-label">🏷️ <span th:text="#{articles.filter.type}">Type:</span></label>
+                <select name="type" id="type" class="sort-select">
+                    <option value="" th:selected="${param.type == null or param.type[0] == '' or param.type[0] == null}" th:text="#{articles.filter.all_types}">All types</option>
+                    <option value="" selected th:text="#{articles.filter.all_types}">All types</option>
+                    <option th:each="c : ${types}"
+                            th:value="${c}"
+                            th:text="${c}"
+                            th:selected="${param.type != null and param.type[0] == c}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="sort-group">
+                <label for="masterId" class="sort-label">✂️ <span th:text="#{articles.filter.master}">Master:</span></label>
+                <select name="masterId" id="masterId" class="sort-select">
+                    <option value="" th:selected="${param.masterId == null or param.masterId[0] == ''}">
+                        <span th:text="#{articles.filter.all_masters}">All masters</span>
+                    </option>
+                    <option th:each="master : ${masters}"
+                            th:value="${master.id}"
+                            th:selected="${param.masterId != null and param.masterId[0] == master.id.toString()}"
+                            th:text="${master.fullName}">
+                        Master Name
+                    </option>
+                </select>
+            </div>
+
+            <div class="sort-group">
+                <label for="title" class="sort-label">🔍 <span th:text="#{articles.filter.search}">Search:</span></label>
+                <div class="search-wrapper">
+                    <input type="text" name="title" id="title" class="search-input"
+                           th:placeholder="#{articles.filter.search_placeholder}"
+                           th:value="${param.title != null ? param.title[0] : ''}">
+                </div>
+            </div>
+
+            <div class="sort-group size-group">
+                <label for="size" class="sort-label">📄 <span th:text="#{articles.filter.items_per_page}">Items:</span></label>
+                <select name="size" id="size" class="sort-select size-select">
+                    <option value="2" th:selected="${param.size != null and param.size[0] == '2'}">2</option>
+                    <option value="5" th:selected="${param.size == null or param.size[0] == '5'}">5</option>
+                    <option value="10" th:selected="${param.size != null and param.size[0] == '10'}">10</option>
+                    <option value="20" th:selected="${param.size != null and param.size[0] == '20'}">20</option>
+                    <option value="50" th:selected="${param.size != null and param.size[0] == '50'}">50</option>
+                </select>
+            </div>
+
+            <div class="sort-buttons">
+                <button type="submit" class="apply-btn">
+                    🔍 <span th:text="#{articles.filter.apply}">Apply</span>
+                </button>
+                <a th:href="@{/article}" class="reset-btn">
+                    🔄 <span th:text="#{articles.filter.reset}">Reset</span>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="articles-grid">
+        <div class="article-card" th:each="article : ${articles}">
+            <div class="article-image-wrapper">
+                <img class="article-cover"
+                     th:if="${article.coverImageUrl != null}"
+                     th:src="@{${article.coverImageUrl}}"
+                     th:alt="${article.title}">
+                <img class="article-cover"
+                     th:unless="${article.coverImageUrl != null}"
+                     th:src="@{/images/articles/default-cover.jpg}"
+                     th:alt="${article.title}">
+
+                <div class="reading-time" th:if="${article.readingTimeMinutes != null}">
+                    <span>⏱️</span>
+                    <span th:text="${article.readingTimeMinutes}">5</span>
+                    <span th:text="#{articles.minutes}">min</span>
+                </div>
+            </div>
+
+            <div class="article-content-wrapper">
+                <div class="article-type-badge" th:attr="data-type=${article.type}">
+                    <span th:text="${article.type != null ? article.type : 'general'}">
+                        general
+                    </span>
+                </div>
+
+                <h2 class="article-title">
+                    <a th:href="@{/article/{id}(id=${article.id})}" th:text="${article.title}">
+                        Article Title
+                    </a>
+                </h2>
+
+                <p class="article-description" th:text="${article.shortDescription}">
+                    Short description of the article...
+                </p>
+
+                <div class="article-meta">
+                    <div class="meta-item" th:if="${article.master != null}">
+                        <span class="meta-icon">✂️</span>
+                        <span class="meta-text" th:text="${article.master.fullName}">Master Name</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <span class="meta-text" th:text="${#temporals.format(article.creatingDate, 'dd.MM.yyyy')}">
+                            01.01.2024
+                        </span>
+                    </div>
+                    <div class="meta-item" th:if="${article.viewsCount != null}">
+                        <span class="meta-icon">👁️</span>
+                        <span class="meta-text" th:text="${article.viewsCount}">0</span>
+                    </div>
+                </div>
+
+                <a th:href="@{/article/{id}(id=${article.id})}" class="read-more-btn">
+                    <span th:text="#{articles.read_more}">Read more</span>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="no-articles" th:if="${articles == null || articles.isEmpty()}">
+            <div class="empty-state">
+                <span class="empty-icon">📭</span>
+                <h3 th:text="#{articles.no_articles}">No articles yet</h3>
+                <p th:text="#{articles.no_articles_desc}">Check back soon for useful tips from our experts!</p>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${totalPages != null and totalPages > 1}" class="pagination">
+        <div class="pagination-container">
+            <a th:if="${currentPage > 0}"
+               th:href="@{/article(page=${currentPage - 1}, size=${param.size != null ? param.size[0] : 5}, sort=${param.sort != null ? param.sort[0] : null}, type=${param.type != null ? param.type[0] : null}, masterId=${param.masterId != null ? param.masterId[0] : null}, title=${param.title != null ? param.title[0] : null})}"
+               class="pagination-btn prev-btn">
+                ◀ <span th:text="#{back}">Previous</span>
+            </a>
+            <span th:unless="${currentPage > 0}" class="pagination-btn prev-btn disabled">
+                ◀ <span th:text="#{back}">Previous</span>
+            </span>
+
+            <div class="page-numbers">
+                <a th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+                   th:if="${page >= currentPage - 2 and page <= currentPage + 2}"
+                   th:href="@{/article(page=${page}, size=${param.size != null ? param.size[0] : 5}, sort=${param.sort != null ? param.sort[0] : null}, type=${param.type != null ? param.type[0] : null}, masterId=${param.masterId != null ? param.masterId[0] : null}, title=${param.title != null ? param.title[0] : null})}"
+                   th:class="${page == currentPage} ? 'page-number active' : 'page-number'"
+                   th:text="${page + 1}">
+                </a>
+            </div>
+
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/article(page=${currentPage + 1}, size=${param.size != null ? param.size[0] : 5}, sort=${param.sort != null ? param.sort[0] : null}, type=${param.type != null ? param.type[0] : null}, masterId=${param.masterId != null ? param.masterId[0] : null}, title=${param.title != null ? param.title[0] : null})}"
+               class="pagination-btn next-btn">
+                <span th:text="#{next}">Next</span> ▶
+            </a>
+            <span th:unless="${currentPage < totalPages - 1}" class="pagination-btn next-btn disabled">
+                <span th:text="#{next}">Next</span> ▶
+            </span>
+        </div>
+
+        <div class="pagination-info">
+            <span th:text="${currentPage + 1} + ' / ' + ${totalPages}"></span>
+            <span class="pagination-divider">|</span>
+            <span th:text="${totalItems} + ' ' + #{articles.items}"></span>
+            <span class="pagination-divider">|</span>
+            <span th:text="#{articles.showing} + ': ' + ${articles.size()} + ' ' + #{articles.of} + ' ' + ${totalItems}"></span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>
+        <span>©
+        <span th:text="${#calendars.year(#calendars.createNow())}"></span>
+        </span>
+        <span th:text="#{zoo_info}">Royal Fluff — Pet Grooming Salon. All rights reserved.</span>
+    </p>
+    <p>
+        <span>📞 </span>
+        <span th:text="#{phone}">Phone:</span>
+        <span th:text="${phone}">+7(999)-999-99-99</span>
+        <span>| 📍 </span>
+        <span th:text="#{address}">SomeCity, st. SomeStreet, someHome</span>
+        <span>| 🕐 </span>
+        <span th:text="#{work_hours}">Work hours:</span>
+        <span th:text="${work_hours}">00-00</span>
+        <span th:text="#{everyday}">EveryDays</span>
+    </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,322 @@
+/* ============================================
+   ARTICLE DETAILS PAGE
+   ============================================ */
+
+/* Хлебные крошки - УВЕЛИЧЕННЫЙ ШРИФТ */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    color: #6b8c6f;
+    margin-bottom: 30px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e8ddd5;
+}
+
+.breadcrumbs a {
+    color: #2c3e2f;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.breadcrumbs a:hover {
+    color: #4a7a4e;
+}
+
+.breadcrumb-separator {
+    color: #c4b5a8;
+    font-size: 22px;
+    font-weight: 300;
+}
+
+/* Шапка статьи */
+.article-header {
+    margin-bottom: 30px;
+}
+
+.article-type-badge-large {
+    display: inline-block;
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: #ffffff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Разные цвета для разных типов */
+.article-type-badge-large[data-type="EDUCATIONAL_PROGRAM"] {
+    background: linear-gradient(135deg, #2980b9 0%, #1a5276 100%);
+}
+
+.article-type-badge-large[data-type="HOME_CARE"] {
+    background: linear-gradient(135deg, #27ae60 0%, #1a6e3a 100%);
+}
+
+.article-type-badge-large[data-type="BREADS_AND_STYLES"] {
+    background: linear-gradient(135deg, #8e44ad 0%, #5b2d6e 100%);
+}
+
+.article-type-badge-large[data-type="LIFESTYLE_ADN_CARE"] {
+    background: linear-gradient(135deg, #e67e22 0%, #a04000 100%);
+}
+
+/* Для совместимости со старыми названиями */
+.article-type-badge-large[data-type="TIPS"] {
+    background: linear-gradient(135deg, #2980b9 0%, #1a5276 100%);
+}
+
+.article-type-badge-large[data-type="HEALTH"] {
+    background: linear-gradient(135deg, #27ae60 0%, #1a6e3a 100%);
+}
+
+.article-type-badge-large[data-type="BREED"] {
+    background: linear-gradient(135deg, #8e44ad 0%, #5b2d6e 100%);
+}
+
+.article-type-badge-large[data-type="STYLE"] {
+    background: linear-gradient(135deg, #e67e22 0%, #a04000 100%);
+}
+
+.article-title {
+    font-size: 38px;
+    color: #2c3e2f;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+}
+
+/* Мета-информация сверху */
+.article-meta-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 15px 0;
+    border-top: 2px solid #e8ddd5;
+    border-bottom: 2px solid #e8ddd5;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #3d5541;
+}
+
+.meta-icon {
+    font-size: 18px;
+}
+
+.meta-text {
+    font-weight: 500;
+    color: #2c3e2f;
+}
+
+/* ============================================
+   ОБЛОЖКА СТАТЬИ - ПОЛНОЕ ОТОБРАЖЕНИЕ
+   ============================================ */
+.article-cover-wrapper {
+    margin: 30px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #f0e8dc 0%, #e8d5b7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.article-cover-large {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    display: block;
+    object-fit: contain;
+    background: linear-gradient(135deg, #f0e8dc 0%, #e8d5b7 100%);
+}
+
+/* ============================================
+   HTML-КОНТЕНТ СТАТЬИ - С ФОНОМ
+   ============================================ */
+.article-content {
+    font-size: 18px;
+    line-height: 1.9;
+    color: #2c3e2f;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 50px;
+    background: #fcf9f6;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Заголовки в контенте */
+.article-content h2 {
+    font-size: 30px;
+    color: #2c3e2f;
+    margin: 40px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e8ddd5;
+}
+
+.article-content h3 {
+    font-size: 24px;
+    color: #3a5a3e;
+    margin: 30px 0 15px;
+}
+
+.article-content h4 {
+    font-size: 20px;
+    color: #3a5a3e;
+    margin: 25px 0 12px;
+}
+
+/* Абзацы */
+.article-content p {
+    margin-bottom: 20px;
+}
+
+/* Списки */
+.article-content ul,
+.article-content ol {
+    margin: 15px 0 25px;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 10px;
+}
+
+/* Изображения внутри статьи */
+.article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 25px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Ссылки */
+.article-content a {
+    color: #2980b9;
+    text-decoration: none;
+    border-bottom: 2px solid #2980b9;
+    transition: color 0.2s;
+}
+
+.article-content a:hover {
+    color: #1a5276;
+    border-bottom-color: #1a5276;
+}
+
+/* Цитаты */
+.article-content blockquote {
+    border-left: 5px solid #2c3e2f;
+    padding: 20px 25px;
+    margin: 25px 0;
+    background: #f8f5f0;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    color: #3d5541;
+}
+
+/* Таблицы */
+.article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.article-content table th,
+.article-content table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.article-content table th {
+    background: #2c3e2f;
+    color: white;
+    font-weight: 600;
+}
+
+.article-content table tr:nth-child(even) {
+    background: #f8f5f0;
+}
+
+/* Код/Преформатированный текст */
+.article-content pre {
+    background: #2c3e2f;
+    color: #ecf0e9;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-size: 15px;
+}
+
+.article-content code {
+    background: #f0ebe5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.article-content pre code {
+    background: transparent;
+    padding: 0;
+}
+
+/* Горизонтальная линия */
+.article-content hr {
+    border: none;
+    height: 2px;
+    background: #e8ddd5;
+    margin: 40px 0;
+}
+
+/* ============================================
+   ФУТЕР СТАТЬИ - ЯРКАЯ КНОПКА
+   ============================================ */
+.article-footer {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e8ddd5;
+    text-align: center;
+}
+
+.back-to-articles-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    box-shadow: 0 4px 16px rgba(44, 62, 47, 0.3);
+    transition: all 0.3s;
+}
+
+.back-to-articles-btn:hover {
+    background: linear-gradient(135deg, #3a5a3e 0%, #2c3e2f 100%);
+    transform: translateX(-5px);
+    box-shadow: 0 6px 24px rgba(44, 62, 47, 0.4);
+}
+
+.back-to-articles-btn .arrow {
+    font-size: 22px;
+    transition: transform 0.3s;
+}
+
+.back-to-articles-btn:hover .arrow {
+    transform: translateX(-5px);
+}

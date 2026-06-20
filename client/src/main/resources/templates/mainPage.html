@@ -18,7 +18,7 @@
             <span class="logo-text" th:text="#{zoo-name}">Royal Fluff</span>
         </div>
         <div class="nav-menu">
-            <a th:href="@{/main}" class="nav-link" id="main-id">
+            <a th:href="@{/main}" class="nav-link active" id="main-id">
                 <span class="logo-icon">✨</span>
                 <span th:text="#{nav.main}">Main</span>
             </a>
@@ -42,13 +42,17 @@
                 <span class="logo-icon">❓</span>
                 <span th:text="#{nav.faq}">FAQ</span>
             </a>
+            <a th:href="@{/article}" class="nav-link" id="articles-id">
+                <span class="logo-icon">📝</span>
+                <span th:text="#{nav.articles}">Articles</span>
+            </a>
         </div>
         <div class="language-switcher">
-            <a href="services.html" th:href="@{/services(lang=en)}"
+            <a href="mainPage.html" th:href="@{${currentUrl}(lang=en)}"
                class="lang-link" title="English" id="eng-id">
                 <span class="fi fi-gb"></span>
             </a>
-            <a href="services.html" th:href="@{/services(lang=ru)}"
+            <a href="mainPage.html" th:href="@{${currentUrl}(lang=ru)}"
                class="lang-link" title="Русский" id="rus-id">
                 <span class="fi fi-ru"></span>
             </a>

@@ -24,7 +24,7 @@
                 <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
             <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
                 <span>📅</span> Мое расписание</a>
-            <a th:href="@{/articles}" class="nav-link" sec:authorize="hasRole('MASTER')">
+            <a th:href="@{/article}" class="nav-link" sec:authorize="hasRole('MASTER')">
                 <span>📝</span> Статьи</a>
             <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
             <a th:href="@{/profile}" class="nav-link active"><span>👤</span> Профиль</a>

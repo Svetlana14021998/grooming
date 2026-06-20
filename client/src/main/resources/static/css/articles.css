@@ -1,0 +1,636 @@
+/* articles.css - стиль в единой стилистике с сайтом */
+
+/* Active nav link */
+.nav-link.active {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Page header */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h1 {
+    font-size: 42px;
+    color: #2c3e2f;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.page-header h1 span:first-child {
+    font-size: 48px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #6b8c6f;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/* ============================================
+   ПАНЕЛЬ СОРТИРОВКИ (КАК НА FEEDBACK)
+   ============================================ */
+.sort-panel {
+    background: linear-gradient(135deg, #fff9f0 0%, #ffe6d5 100%);
+    border-radius: 16px;
+    padding: 20px 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.sort-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 20px;
+    align-items: flex-end;
+}
+
+.sort-group {
+    flex: 1;
+    min-width: 160px;
+}
+
+.sort-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e2f;
+    margin-bottom: 8px;
+}
+
+.sort-select {
+    width: 100%;
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #e8d5b7;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #2c3e2f;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232c3e2f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    transition: all 0.3s ease;
+}
+
+.sort-select:hover {
+    border-color: #ffd700;
+    background-color: #fffef5;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+}
+
+/* Специально для выбора количества записей */
+.size-group {
+    flex: 0.5;
+    min-width: 100px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #e8d5b7;
+    border-radius: 30px 0 0 30px;
+    font-size: 14px;
+    color: #2c3e2f;
+    transition: all 0.3s ease;
+    min-width: 0;
+}
+
+.search-input:hover {
+    border-color: #ffd700;
+    background-color: #fffef5;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+}
+
+.search-input::placeholder {
+    color: #b5a898;
+}
+
+.search-btn {
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: white;
+    border: none;
+    border-radius: 0 30px 30px 0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.search-btn:hover {
+    background: linear-gradient(135deg, #3a5a3e 0%, #2c3e2f 100%);
+}
+
+/* ============================================
+   КНОПКИ СОРТИРОВКИ (КАК НА FEEDBACK)
+   ============================================ */
+.sort-buttons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.apply-btn {
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.apply-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #3a5a3e 0%, #2c3e2f 100%);
+}
+
+.reset-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid #2c3e2f;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #2c3e2f;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.reset-btn:hover {
+    background: #2c3e2f;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   ARTICLES COUNT
+   ============================================ */
+.articles-count {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color: #6b8c6f;
+    margin-bottom: 30px;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    display: inline-block;
+    float: none;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.count-number {
+    font-weight: 600;
+    color: #3a5a3e;
+    font-size: 17px;
+    padding: 0 4px;
+}
+
+/* Grid layout - ОДНА КОЛОНКА */
+.articles-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 10px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Article card */
+.article-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   IMAGE WRAPPER
+   ============================================ */
+.article-image-wrapper {
+    position: relative;
+    width: 300px;
+    min-height: 200px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f0e8dc 0%, #e8d5b7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.article-cover {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    background: linear-gradient(135deg, #f0e8dc 0%, #e8d5b7 100%);
+}
+
+.article-card:hover .article-cover {
+    transform: scale(1.03);
+}
+
+/* ---------- BADGE: ВРЕМЯ ЧТЕНИЯ (НА ФОТО) ---------- */
+.reading-time {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    z-index: 2;
+}
+
+.reading-time .time-icon {
+    font-size: 16px;
+}
+
+.reading-time .time-number {
+    font-weight: 700;
+    color: #ffd700;
+    font-size: 17px;
+}
+
+.reading-time .time-label {
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Content wrapper */
+.article-content-wrapper {
+    padding: 22px 25px 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* ============================================
+   BADGE: ТИП СТАТЬИ (В БЛОКЕ С ОПИСАНИЕМ)
+   ============================================ */
+.article-type-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+    width: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Базовый цвет (для general) */
+.article-type-badge {
+    background: linear-gradient(135deg, #6c7a6e 0%, #4a5a4e 100%);
+    color: #ffffff;
+}
+
+/* ----- ЦВЕТА ДЛЯ РАЗНЫХ ТИПОВ СТАТЕЙ ----- */
+
+/* 1. Экспертный ликбез - СИНИЙ */
+.article-type-badge[data-type="EDUCATIONAL_PROGRAM"] {
+    background: linear-gradient(135deg, #2980b9 0%, #1a5276 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(41, 128, 185, 0.4);
+}
+
+/* 2. Домашний уход. Инструкции - ЗЕЛЕНЫЙ */
+.article-type-badge[data-type="HOME_CARE"] {
+    background: linear-gradient(135deg, #27ae60 0%, #1a6e3a 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(39, 174, 96, 0.4);
+}
+
+/* 3. Породы и стили - ФИОЛЕТОВЫЙ */
+.article-type-badge[data-type="BREADS_AND_STYLES"] {
+    background: linear-gradient(135deg, #8e44ad 0%, #5b2d6e 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(142, 68, 173, 0.4);
+}
+
+/* 4. Лайфстайл и забота - ОРАНЖЕВЫЙ */
+.article-type-badge[data-type="LIFESTYLE_ADN_CARE"] {
+    background: linear-gradient(135deg, #e67e22 0%, #a04000 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(230, 126, 34, 0.4);
+}
+
+.article-type-badge[data-type="TIPS"] {
+    background: linear-gradient(135deg, #2980b9 0%, #1a5276 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(41, 128, 185, 0.4);
+}
+
+.article-type-badge[data-type="HEALTH"] {
+    background: linear-gradient(135deg, #27ae60 0%, #1a6e3a 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(39, 174, 96, 0.4);
+}
+
+.article-type-badge[data-type="BREED"] {
+    background: linear-gradient(135deg, #8e44ad 0%, #5b2d6e 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(142, 68, 173, 0.4);
+}
+
+.article-type-badge[data-type="STYLE"] {
+    background: linear-gradient(135deg, #e67e22 0%, #a04000 100%);
+    color: #ffffff;
+    box-shadow: 0 2px 12px rgba(230, 126, 34, 0.4);
+}
+
+.article-type-badge span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.article-title {
+    font-size: 22px;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+}
+
+.article-title a {
+    color: #2c3e2f;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.article-title a:hover {
+    color: #4a7a4e;
+}
+
+.article-description {
+    color: #5a6b5e;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 18px 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ============================================
+   META INFORMATION
+   ============================================ */
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 0;
+    border-top: 2px solid #e8ddd5;
+    border-bottom: 2px solid #e8ddd5;
+    margin-bottom: 16px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3d5541;
+}
+
+.meta-icon {
+    font-size: 16px;
+}
+
+.meta-text {
+    font-weight: 600;
+    color: #2c3e2f;
+}
+
+/* Разделитель между мета-элементами */
+.meta-item:not(:last-child)::after {
+    content: "•";
+    color: #c4b5a8;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+/* Read more button */
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e2f;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-top: auto;
+    padding: 10px 0 4px;
+    border-bottom: 3px solid transparent;
+    width: fit-content;
+}
+
+.read-more-btn:hover {
+    color: #4a7a4e;
+    border-bottom-color: #4a7a4e;
+    gap: 14px;
+}
+
+.read-more-btn .arrow {
+    transition: transform 0.3s;
+    font-size: 20px;
+}
+
+.read-more-btn:hover .arrow {
+    transform: translateX(6px);
+}
+
+.no-articles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 40px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.empty-icon {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-size: 28px;
+    color: #2c3e2f;
+    margin: 0 0 10px 0;
+    border: none;
+    display: block;
+}
+
+.empty-state p {
+    color: #6b8c6f;
+    font-size: 16px;
+    margin: 0;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e8ddd5;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    background: white;
+    border: 2px solid #e8ddd5;
+    border-radius: 30px;
+    color: #2c3e2f;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: 45px;
+    cursor: pointer;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: white;
+    border-color: #2c3e2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 62, 47, 0.2);
+}
+
+.pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 6px;
+}
+
+.page-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background: white;
+    border: 2px solid #e8ddd5;
+    border-radius: 30px;
+    color: #2c3e2f;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-width: 40px;
+}
+
+.page-number:hover:not(.active) {
+    background: #f5f0ea;
+    border-color: #2c3e2f;
+}
+
+.page-number.active {
+    background: linear-gradient(135deg, #2c3e2f 0%, #1e2e21 100%);
+    color: white;
+    border-color: #2c3e2f;
+}
+
+.pagination-info {
+    font-size: 14px;
+    color: #6b8c6f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-divider {
+    color: #c4b5a8;
+}
