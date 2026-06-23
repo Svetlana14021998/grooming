@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.example.config.AppConfig;
 import org.example.exception.CantSaveFileException;
 import org.example.exception.EntityNotFoundException;
+import org.example.exception.IncorrectDataException;
 import org.example.exception.IncorrectPasswordException;
 import org.example.exception.SendMessagingException;
 import org.example.exception.ValidationException;
@@ -65,5 +66,12 @@ public class BaseControllerAdvice {
         return ResponseEntity
             .badRequest()
             .body(e.getErrors());
+    }
+
+    @ExceptionHandler(IncorrectDataException.class)
+    public ResponseEntity<?> catchIncorrectDataException(IncorrectDataException e) {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(e.getMessage());
     }
 }

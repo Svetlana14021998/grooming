@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UsefulArticleDto;
 import org.example.enums.ArticleType;
 import org.example.exception.EntityNotFoundException;
+import org.example.exception.IncorrectDataException;
 import org.example.model.Master;
 import org.example.model.UsefulArticle;
 import org.example.repository.MasterRepository;
@@ -72,8 +73,7 @@ public class UsefulArticleConverter {
     private String getImageName(String url) {
         String[] split = url.split("/");
         if (split.length != 4) {
-            //todo добавить ошибку
-            throw new RuntimeException("Incorrect path to photo");
+            throw new IncorrectDataException("Incorrect path to photo");
         }
         return split[3];
     }
