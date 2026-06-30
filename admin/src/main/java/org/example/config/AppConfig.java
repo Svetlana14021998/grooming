@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+import org.springframework.util.unit.DataSize;
 
 @Component
 @ConfigurationProperties
@@ -28,4 +29,6 @@ public class AppConfig {
     @Value("${app.mail-printform-path}")
     private String mailPrintFormPath;
 
+    @Value("${app.max-file-size}")
+    private DataSize maxFileSize;
 }

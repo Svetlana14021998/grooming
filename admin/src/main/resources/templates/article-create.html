@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Fluff - Создание статьи</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/article-create.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css"/>
+
+    <!-- Trumbowyg CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trumbowyg@2.28.0/dist/ui/trumbowyg.min.css">
+</head>
+<body>
+
+<div class="admin-navbar">
+    <div class="admin-nav-container">
+        <div class="logo">
+            <span class="logo-icon">🐾</span>
+            <span class="logo-text">Royal Fluff <span class="admin-badge">ADMIN</span></span>
+        </div>
+        <div class="admin-nav-menu">
+            <a th:href="@{/dashboard}" class="nav-link"><span>🏠</span> Главная</a>
+            <a th:href="@{/tasks}" class="nav-link"><span>📋</span> Мои задачи
+                <span class="badge" th:text="${tasksCount != null ? tasksCount : 0}">0</span></a>
+            <a th:href="@{/schedule}" class="nav-link" sec:authorize="hasRole('MASTER')">
+                <span>📅</span> Мое расписание</a>
+            <a th:href="@{/article}" class="nav-link active" sec:authorize="hasRole('MASTER')">
+                <span>📝</span> Статьи</a>
+            <a th:href="@{/employee-info}" class="nav-link"><span>📞</span> Сотрудники</a>
+            <a th:href="@{/profile}" class="nav-link"><span>👤</span> Профиль</a>
+        </div>
+        <div class="admin-user-menu">
+            <span class="user-name" sec:authentication="principal.fullName">Администратор</span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="logout-btn">🚪 Выход</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>✍️ Создание статьи</h1>
+        <a th:href="@{/article}" class="back-btn">← Назад к статьям</a>
+    </div>
+
+    <div th:if="${errorMessage}" class="global-error show">
+        <strong>⚠ Ошибка при создании статьи</strong>
+        <ul>
+            <li th:text="${errorMessage}"></li>
+        </ul>
+    </div>
+
+    <div th:if="${errors != null and !errors.isEmpty()}" class="error-legend show">
+        <span class="legend-item">
+            <span class="legend-color field"></span>
+            <span>— поле с ошибкой</span>
+        </span>
+        <span class="legend-item">
+            <span class="legend-color message"></span>
+            <span>— пояснение к ошибке</span>
+        </span>
+    </div>
+
+    <div class="form-container">
+        <form th:action="@{/article}"
+              method="post"
+              enctype="multipart/form-data"
+              class="article-form"
+              id="articleForm">
+
+            <!-- ЗАГОЛОВОК -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('title')} ? has-error : ''">
+                <label for="title" class="form-label">
+                    📌 Заголовок <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('title')}" class="error-marker">Ошибка</span>
+                </label>
+                <input type="text"
+                       id="title"
+                       name="title"
+                       class="form-control"
+                       th:classappend="${errors != null and errors.containsKey('title')} ? is-invalid : ''"
+                       placeholder="Введите заголовок статьи..."
+                       th:value="${article != null ? article.title : ''}">
+                <div th:if="${errors != null and errors.containsKey('title')}"
+                     class="field-error"
+                     th:text="${errors.get('title')}">
+                </div>
+            </div>
+
+            <!-- ТИП СТАТЬИ -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('type')} ? has-error : ''">
+                <label for="type" class="form-label">
+                    🏷️ Тип статьи <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('type')}" class="error-marker">Ошибка</span>
+                </label>
+                <select id="type" name="type" class="form-control"
+                        th:classappend="${errors != null and errors.containsKey('type')} ? is-invalid : ''">
+                    <option value="">Выберите тип статьи...</option>
+                    <option th:each="type : ${articleType}"
+                            th:value="${type.name()}"
+                            th:text="${type.nameRu}"
+                            th:selected="${article != null and article.type != null and article.type == type.name()}">
+                    </option>
+                </select>
+                <div th:if="${errors != null and errors.containsKey('type')}"
+                     class="field-error"
+                     th:text="${errors.get('type')}">
+                </div>
+            </div>
+
+            <!-- КРАТКОЕ ОПИСАНИЕ -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('shortDescription')} ? has-error : ''">
+                <label for="shortDescription" class="form-label">
+                    📝 Краткое описание <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('shortDescription')}" class="error-marker">Ошибка</span>
+                </label>
+                <textarea id="shortDescription"
+                          name="shortDescription"
+                          class="form-control"
+                          rows="3"
+                          th:classappend="${errors != null and errors.containsKey('shortDescription')} ? is-invalid : ''"
+                          placeholder="Краткое описание для карточки статьи..."
+                          th:text="${article != null ? article.shortDescription : ''}"></textarea>
+                <div th:if="${errors != null and errors.containsKey('shortDescription')}"
+                     class="field-error"
+                     th:text="${errors.get('shortDescription')}">
+                </div>
+                <small class="form-text">Длина текста максимум 500 символов</small>
+            </div>
+
+            <!-- ОБЛОЖКА -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('coverImage')} ? has-error : ''">
+                <label for="coverImage" class="form-label">
+                    🖼️ Обложка <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('coverImage')}" class="error-marker">Ошибка</span>
+                </label>
+                <input type="file"
+                       id="coverImage"
+                       name="coverImage"
+                       class="form-control-file"
+                       th:classappend="${errors != null and errors.containsKey('coverImage')} ? is-invalid : ''"
+                       accept="image/*">
+                <div th:if="${errors != null and errors.containsKey('coverImage')}"
+                     class="field-error"
+                     th:text="${errors.get('coverImage')}">
+                </div>
+                <small class="form-text">Загрузите изображение в формате JPG. Максимальный размер файла - 400 Кбайт</small>
+                <div id="coverPreview" style="display: none; margin-top: 10px;">
+                    <img id="coverPreviewImg" src="" alt="Preview" style="max-width: 300px; border-radius: 8px; border: 2px solid #e9ecef; padding: 4px;">
+                </div>
+            </div>
+
+            <!-- ВРЕМЯ ЧТЕНИЯ -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('readingTimeMinutes')} ? has-error : ''">
+                <label for="readingTimeMinutes" class="form-label">
+                    ⏱️ Время чтения (минут) <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('readingTimeMinutes')}" class="error-marker">Ошибка</span>
+                </label>
+                <input type="number"
+                       id="readingTimeMinutes"
+                       name="readingTimeMinutes"
+                       class="form-control"
+                       th:classappend="${errors != null and errors.containsKey('readingTimeMinutes')} ? is-invalid : ''"
+                       min="1"
+                       max="60"
+                       placeholder="5"
+                       th:value="${article != null ? article.readingTimeMinutes : 5}">
+                <div th:if="${errors != null and errors.containsKey('readingTimeMinutes')}"
+                     class="field-error"
+                     th:text="${errors.get('readingTimeMinutes')}">
+                </div>
+            </div>
+
+            <!-- ОСНОВНОЙ КОНТЕНТ -->
+            <div class="form-group" th:classappend="${errors != null and errors.containsKey('text')} ? has-error : ''">
+                <label for="content" class="form-label" style="font-size: 18px;">
+                    📄 Текст статьи <span class="required">*</span>
+                    <span th:if="${errors != null and errors.containsKey('text')}" class="error-marker">Ошибка</span>
+                </label>
+
+                <div class="editor-instruction">
+                    <div class="instruction-icon">✍️</div>
+                    <div class="instruction-text">
+                        <strong>Как писать статью:</strong>
+                        <ol>
+                            <li><strong>Кликните</strong> в поле ниже — появится курсор</li>
+                            <li><strong>Печатайте</strong> текст статьи</li>
+                            <li>Используйте <span class="highlight">панель инструментов</span> сверху для форматирования</li>
+                            <li>Объем текста  <strong>неограничен</strong></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <textarea id="content" name="text" class="form-control" rows="15"
+                          th:classappend="${errors != null and errors.containsKey('text')} ? is-invalid : ''"
+                          th:text="${article != null ? article.text : ''}"></textarea>
+
+                <div th:if="${errors != null and errors.containsKey('text')}"
+                     class="field-error"
+                     th:text="${errors.get('text')}">
+                </div>
+                <small class="form-text" style="font-size: 14px; color: #6c757d;">
+                    💡 Просто кликните в поле и начните печатать
+                </small>
+            </div>
+
+            <!-- КНОПКИ -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">💾 Сохранить статью</button>
+                <button type="button" class="btn btn-secondary" id="previewBtn">👁️ Предпросмотр</button>
+                <button type="button" class="btn btn-secondary" id="clearBtn">🗑️ Очистить</button>
+                <a th:href="@{/article}" class="btn btn-danger">❌ Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <p>© <span th:text="${#calendars.year(#calendars.createNow())}"></span> Royal Fluff — Административная панель</p>
+</footer>
+
+<!-- Скрипты -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/trumbowyg@2.28.0/dist/trumbowyg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/trumbowyg@2.28.0/dist/langs/ru.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+     'use strict';
+
+     // ==========================================
+     // 1. ИНИЦИАЛИЗАЦИЯ TRUMBOWYG
+     // ==========================================
+     $('#content').trumbowyg({
+         lang: 'ru',
+         minHeight: 400,
+         maxHeight: 700,
+         btns: [
+             ['bold', 'italic'],
+             ['h2', 'h3', 'h4']
+         ],
+         removeformatPasted: true,
+         semantic: true,
+         resetCss: true
+     });
+
+     // ==========================================
+     // 2. ПРЕВЬЮ ОБЛОЖКИ
+     // ==========================================
+     $('#coverImage').on('change', function(e) {
+         const file = e.target.files[0];
+         const preview = $('#coverPreview');
+         const previewImg = $('#coverPreviewImg');
+
+         if (file) {
+             const reader = new FileReader();
+             reader.onload = function(event) {
+                 previewImg.attr('src', event.target.result);
+                 preview.show();
+             };
+             reader.readAsDataURL(file);
+         } else {
+             preview.hide();
+         }
+     });
+
+     // ==========================================
+     // 3. ПРЕДПРОСМОТР
+     // ==========================================
+     $('#previewBtn').on('click', function(e) {
+         e.preventDefault();
+
+         const content = $('#content').trumbowyg('html');
+         const title = $('#title').val().trim() || 'Без заголовка';
+
+         const textContent = $(content).text().trim();
+         if (!content || content.trim() === '' || content === '<p><br></p>' || textContent.length < 10) {
+             alert('Добавьте текст статьи перед предпросмотром.');
+             return;
+         }
+
+         const win = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
+         win.document.write(`
+             <!DOCTYPE html>
+             <html>
+             <head>
+                 <meta charset="UTF-8">
+                 <title>Предпросмотр: ${title}</title>
+                 <style>
+                     body {
+                         font-family: 'Segoe UI', Arial, sans-serif;
+                         max-width: 800px;
+                         margin: 40px auto;
+                         padding: 20px;
+                         color: #1a1a2e;
+                         line-height: 1.8;
+                     }
+                     h1, h2, h3, h4 {
+                         color: #1a1a2e;
+                     }
+                     h1 {
+                         border-bottom: 3px solid #ffd700;
+                         padding-bottom: 15px;
+                     }
+                     .preview-header {
+                         margin-bottom: 30px;
+                         padding-bottom: 20px;
+                         border-bottom: 2px solid #e9ecef;
+                     }
+                     .preview-meta {
+                         color: #6c757d;
+                         font-size: 14px;
+                     }
+                     .preview-content img {
+                         max-width: 100%;
+                         height: auto;
+                         border-radius: 8px;
+                     }
+                     .close-btn {
+                         display: inline-block;
+                         padding: 10px 24px;
+                         background: #1a1a2e;
+                         color: white;
+                         border: none;
+                         border-radius: 8px;
+                         cursor: pointer;
+                         font-size: 14px;
+                         margin-top: 20px;
+                     }
+                     .close-btn:hover {
+                         background: #ffd700;
+                         color: #1a1a2e;
+                     }
+                 </style>
+             </head>
+             <body>
+                 <div class="preview-header">
+                     <h1>${title.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</h1>
+                     <div class="preview-meta">📅 Предпросмотр статьи</div>
+                 </div>
+                 <div class="preview-content">${content}</div>
+                 <button class="close-btn" onclick="window.close()">✕ Закрыть</button>
+             </body>
+             </html>
+         `);
+         win.document.close();
+     });
+
+     // ==========================================
+     // 4. ОТПРАВКА ФОРМЫ — синхронизация контента
+     // ==========================================
+     $('#articleForm').on('submit', function() {
+         $('#content').trumbowyg('sync');
+         return true;
+     });
+
+     // ==========================================
+     // 5. КНОПКА "ОЧИСТИТЬ"
+     // ==========================================
+     $('#clearBtn').on('click', function(e) {
+         e.preventDefault();
+
+         if (confirm('Вы уверены, что хотите очистить все поля?')) {
+             // Очищаем все текстовые поля (кроме скрытых и файлов)
+             $('#articleForm input:not([type="hidden"]):not([type="file"]), #articleForm textarea, #articleForm select').val('');
+
+             // Очищаем редактор
+             $('#content').trumbowyg('html', '');
+
+             // Сбрасываем файл и превью
+             $('#coverImage').val('');
+             $('#coverPreview').hide();
+
+             // Убираем классы ошибок
+             $('.form-control').removeClass('is-invalid is-valid');
+             $('.field-error').empty();
+
+             // Сбрасываем select на первый option
+             $('#type').val('');
+
+             // Убираем сообщения об ошибках
+             $('.global-error').removeClass('show');
+             $('.error-legend').removeClass('show');
+
+             // Убираем скрытые поля с ошибками
+             $('input[name="title"], input[name="type"], input[name="shortDescription"], input[name="readingTimeMinutes"], input[name="text"]').val('');
+         }
+     });
+ });
+</script>
+
+</body>
+</html>

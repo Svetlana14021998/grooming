@@ -1,0 +1,480 @@
+/* article-create.css */
+
+/* ============================================
+   ОСНОВНЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ
+   ============================================ */
+.admin-dashboard {
+    flex: 1;
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 0 20px 40px;
+    position: relative;
+}
+
+/* ============================================
+   ХЕДЕР
+   ============================================ */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    color: #1a1a2e;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.back-btn:hover {
+    background: #ffd700;
+    transform: translateX(-3px);
+    border-color: #ffd700;
+}
+
+/* ============================================
+   ФОРМА
+   ============================================ */
+.form-container {
+    background: white;
+    padding: 35px 40px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.article-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Группы полей */
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Метки */
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+}
+
+.form-label .required {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+/* Поля ввода */
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #1a1a2e;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    background: #f8f9fa;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #ffd700;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15);
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* Текстовые области */
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* Селекты */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231a1a2e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+}
+
+/* Файловый инпут */
+.form-control-file {
+    padding: 8px 0;
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    color: #1a1a2e;
+}
+
+.form-control-file::file-selector-button {
+    padding: 8px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+}
+
+.form-control-file::file-selector-button:hover {
+    background: #ffd700;
+    border-color: #ffd700;
+}
+
+/* Подсказки */
+.form-text {
+    display: block;
+    font-size: 13px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* ============================================
+   КНОПКИ
+   ============================================ */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 2px solid #e9ecef;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #1a1a2e;
+    border: 1px solid #e9ecef;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+/* ============================================
+   TINYMCE КАСТОМИЗАЦИЯ
+   ============================================ */
+.tox-tinymce {
+    border-radius: 8px !important;
+    border-color: #e9ecef !important;
+}
+
+.tox-tinymce:focus-within {
+    border-color: #ffd700 !important;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.15) !important;
+}
+
+/* Стили для контента внутри редактора */
+.tox .tox-editor-container {
+    background: #f8f9fa;
+}
+
+.editor-instruction {
+    background: linear-gradient(135deg, #fff9f0 0%, #ffe6d5 100%);
+    border: 2px solid #ffd700;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+.editor-instruction .instruction-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.editor-instruction .instruction-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1a1a2e;
+}
+.editor-instruction .instruction-text .highlight {
+    background: #ffd700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.editor-instruction ol {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+}
+.editor-instruction ol li {
+    margin-bottom: 4px;
+}
+
+.trumbowyg-box {
+    border-radius: 12px !important;
+    border: 2px solid #e9ecef !important;
+}
+.trumbowyg-box:focus-within {
+    border-color: #ffd700 !important;
+    box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2) !important;
+}
+.trumbowyg-editor {
+    min-height: 400px !important;
+    padding: 20px !important;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+}
+.trumbowyg-editor:focus {
+    outline: none !important;
+}
+.trumbowyg-button-pane {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #e9ecef !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 6px 10px !important;
+}
+.trumbowyg-button-pane .trumbowyg-button-group {
+    display: inline-flex !important;
+    gap: 2px !important;
+    margin-right: 10px !important;
+}
+.trumbowyg-button-pane button {
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+}
+.trumbowyg-button-pane button:hover {
+    background: #ffd700 !important;
+}
+.trumbowyg-button-pane button.trumbowyg-active {
+    background: #1a1a2e !important;
+    color: white !important;
+}
+
+.trumbowyg-button-group:has(.trumbowyg-viewHTML-button) { display: none !important; }
+
+.form-label .required {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+/* ==========================================
+   ПОНЯТНЫЕ СООБЩЕНИЯ ОБ ОШИБКАХ
+   ========================================== */
+
+/* 1. Метка поля с ошибкой — НЕ красная, а просто с маркером */
+.form-group.has-error .form-label {
+    color: #1a1a2e; /* обычный цвет */
+    font-weight: 700;
+}
+
+.form-group.has-error .form-label .error-marker {
+    display: inline-block;
+    background: #dc3545;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+    letter-spacing: 0.3px;
+}
+
+/* 2. Поле с ошибкой — желтый фон + рамка */
+.form-control.is-invalid {
+    border-color: #e8b84c !important;
+    background-color: #fffef7 !important;
+    border-width: 2px !important;
+}
+
+.form-control.is-invalid:focus {
+    border-color: #d4a030 !important;
+    box-shadow: 0 0 0 4px rgba(232, 184, 76, 0.15) !important;
+}
+
+/* 3. Сообщение об ошибке — с иконкой и отступом */
+.field-error {
+    color: #c0392b;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+    padding: 8px 12px 8px 36px;
+    background: #fef6f5;
+    border-left: 4px solid #c0392b;
+    border-radius: 4px;
+    display: block;
+    position: relative;
+}
+
+.field-error::before {
+    content: "✕";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #c0392b;
+    font-weight: 700;
+}
+
+/* Глобальная ошибка */
+.global-error {
+    background: #fef6f5;
+    border-left: 5px solid #c0392b;
+    color: #5a3a3a;
+    padding: 16px 22px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    display: none;
+}
+.global-error.show {
+    display: block;
+}
+.global-error strong {
+    color: #c0392b;
+    font-weight: 700;
+}
+.global-error ul {
+    margin: 6px 0 0 0;
+    padding-left: 20px;
+    font-weight: 400;
+    color: #5a3a3a;
+}
+.global-error ul li {
+    margin-bottom: 3px;
+}
+
+/* Глобальный успех */
+.global-success {
+    background: #f4faf4;
+    border-left: 5px solid #3d8b3d;
+    color: #3d6b3d;
+    padding: 16px 22px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    display: none;
+}
+.global-success.show {
+    display: block;
+}
+.global-success::before {
+    content: "✓ ";
+    font-weight: 700;
+    color: #3d8b3d;
+}
+
+#coverPreview {
+    margin-top: 10px;
+}
+#coverPreview img {
+    max-width: 300px;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 4px;
+}
+
+/* Легенда для ошибок */
+.error-legend {
+    display: none;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px dashed #dee2e6;
+    font-size: 14px;
+}
+.error-legend.show {
+    display: block;
+}
+.error-legend .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 20px;
+}
+.error-legend .legend-color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+.error-legend .legend-color.field {
+    background: #fffef7;
+    border: 2px solid #e8b84c;
+}
+.error-legend .legend-color.message {
+    background: #fef6f5;
+    border-left: 4px solid #c0392b;
+    padding: 0 12px;
+}

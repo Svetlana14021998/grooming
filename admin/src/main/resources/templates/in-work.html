@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница в разработке - Royal Fluff</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdf8ed 0%, #fff9f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a2e;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .icon {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        h1 span {
+            color: #ffd700;
+        }
+
+        p {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: #ffd700;
+            border-radius: 4px;
+            margin: 0 auto 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: #1a1a2e;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #ffd700;
+            color: #1a1a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #adb5bd;
+        }
+
+        .footer a {
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #ffd700;
+        }
+
+        @media (max-width: 480px) {
+            .icon {
+                font-size: 56px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <span class="icon">🏗️</span>
+
+    <h1>Страница в <span>разработке</span></h1>
+
+    <div class="divider"></div>
+
+    <p>
+        Мы работаем над этой страницей.<br>
+        Скоро здесь появится полезный контент!
+    </p>
+
+    <a th:href="@{/dashboard}" class="btn">🏠 На главную</a>
+
+    <div class="footer">
+        <span>🐾</span>
+        <span>Royal Fluff</span>
+        <span>🐾</span>
+    </div>
+</div>
+
+</body>
+</html>

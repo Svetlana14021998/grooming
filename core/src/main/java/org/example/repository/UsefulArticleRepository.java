@@ -14,5 +14,7 @@ public interface UsefulArticleRepository extends JpaRepository<UsefulArticle, Lo
 
     List<UsefulArticle> findByMasterId(Long id);
 
+    long countByMasterId(Long masterId);
+
     Page<UsefulArticle> findAll(Specification<UsefulArticle> spec, Pageable pageable);
 }

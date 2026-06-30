@@ -34,42 +34,42 @@ public class BaseControllerAdvice {
     }
 
     @ExceptionHandler(CantSaveFileException.class)
-    public ResponseEntity<?> catchCantSaveFileException(CantSaveFileException e) {
+    public ResponseEntity<?> handleCantSaveFileException(CantSaveFileException e) {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body("{\"error\": \"Не удалось сохранить файл\"}");
     }
 
     @ExceptionHandler(IncorrectPasswordException.class)
-    public ResponseEntity<?> catchPasswordException(IncorrectPasswordException e) {
+    public ResponseEntity<?> handlePasswordException(IncorrectPasswordException e) {
         Map<String, String> response = new HashMap<>();
         response.put("message", e.getMessage());
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> catchEntityNotFoundException(EntityNotFoundException e) {
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
         return ResponseEntity
             .badRequest()
             .body(e.getMessage());
     }
 
     @ExceptionHandler(SendMessagingException.class)
-    public ResponseEntity<?> catchSendMessagingException(SendMessagingException e) {
+    public ResponseEntity<?> handleSendMessagingException(SendMessagingException e) {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body("Не удалось отправить письмо с паролем. Повторите попытку позднее. В случае необходимости свяжитесь с поддержкой");
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> catchValidationException(ValidationException e) {
+    public ResponseEntity<?> handleValidationException(ValidationException e) {
         return ResponseEntity
             .badRequest()
             .body(e.getErrors());
     }
 
     @ExceptionHandler(IncorrectDataException.class)
-    public ResponseEntity<?> catchIncorrectDataException(IncorrectDataException e) {
+    public ResponseEntity<?> handleIncorrectDataException(IncorrectDataException e) {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(e.getMessage());

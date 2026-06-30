@@ -58,7 +58,7 @@ public class UsefulArticleConverter {
 
         return UsefulArticle.builder()
             .id(dto.getId())
-            .type(ArticleType.fromLocalizedName(dto.getType()))
+            .type(ArticleType.valueOf(dto.getType()))
             .title(dto.getTitle())
             .text(dto.getText())
             .master(master)

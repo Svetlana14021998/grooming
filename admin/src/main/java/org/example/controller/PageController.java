@@ -2,8 +2,10 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserDto;
+import org.example.enums.ArticleType;
 import org.example.enums.UserRole;
 import org.example.model.AppUser;
+import org.example.service.UsefulArticleService;
 import org.example.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,14 +19,20 @@ public class PageController {
 
     private final UserService userService;
 
+    private final UsefulArticleService articleService;
+
     @GetMapping("/login")
     public String getLoginPage() {
         return "login";
     }
 
     @GetMapping("/dashboard")
-    public String getDashboardPage(Model model) {
+    public String getDashboardPage(Authentication authentication, Model model) {
+        AppUser currentUser = (AppUser) authentication.getPrincipal();
+        Long masterId = currentUser.getMaster().getId();
+        long countOfArticles = articleService.countArticlesForMaster(masterId);
         model.addAttribute("users", userService.getUsersWithBirthdayInThisMonth());
+        model.addAttribute("articlesCount", countOfArticles);
         return "dashboard";
     }
 
@@ -71,5 +79,32 @@ public class PageController {
         Model model) {
         model.addAttribute("employees", userService.getAllUsers(searchTerm, role, pageNumber, pageSize, isBirthday));
         return "employee-info";
+    }
+
+    @GetMapping("/article/create")
+    public String getArticleCreatePage(Model model) {
+        model.addAttribute("articleType", ArticleType.values());
+        return "article-create";
+    }
+
+    @GetMapping("/article")
+    public String getArticlesPage(Model model) {
+        //todo функционал в разработке
+        return "in-work";
+        // return "article";
+    }
+
+    @GetMapping("/tasks")
+    public String getTaskPage(Model model) {
+        //todo функционал в разработке
+        return "in-work";
+        // return "tasks";
+    }
+
+    @GetMapping("/schedule")
+    public String getSchedulePage(Model model) {
+        //todo функционал в разработке
+        return "in-work";
+        // return "schedule";
     }
 }
